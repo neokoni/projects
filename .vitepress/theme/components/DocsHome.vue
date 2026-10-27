@@ -24,7 +24,7 @@ withDefaults(
 
 <template>
   <div class="mx-auto max-w-[1152px] px-5 pb-[72px] pt-2 sm:px-6 sm:pb-24">
-    <header class="pt-10">
+    <header class="relative pt-10">
       <h1 class="text-[30px] font-bold leading-[1.15] tracking-[-0.02em] sm:text-[40px]">{{ title }}</h1>
       <p v-if="description" class="mt-3.5 max-w-[62ch] text-[15px] leading-[1.7] text-[var(--vp-c-text-2)] sm:text-base">
         {{ description }}
@@ -44,7 +44,7 @@ withDefaults(
           <a
             v-for="item in section.items"
             :key="item.link"
-            class="group/docs flex flex-col gap-1.5 rounded-xl border border-[var(--vp-c-divider)] bg-[var(--vp-c-bg-soft)] px-5 py-[18px] transition-[border-color,background-color,translate] duration-200 hover:-translate-y-0.5 hover:border-[var(--vp-c-brand-1)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--vp-c-brand-1)] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+            class="group/docs flex flex-col gap-1.5 rounded-xl border border-[var(--vp-c-divider)] bg-[var(--vp-c-bg-soft)] px-5 py-[18px] shadow-[var(--vp-shadow-1)] transition-[border-color,background-color,translate,box-shadow] duration-200 hover:-translate-y-0.5 hover:border-[var(--vp-c-brand-1)] hover:shadow-[var(--vp-shadow-2)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--vp-c-brand-1)] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
             :href="item.link"
           >
             <span class="flex items-center justify-between gap-3">

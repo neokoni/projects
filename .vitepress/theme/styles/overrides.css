@@ -1,6 +1,41 @@
 /* Overrides for VitePress internals. Component styling lives in the templates
    as Tailwind utilities. */
 
+:root {
+  --nk-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --nk-sidebar-row: 8px;
+}
+
+/* ---------- theme switch ---------- */
+
+/* Surfaces and text fade between light and dark instead of snapping. Only
+   elements without a stronger transition of their own pick this up: the
+   component and nav rules are more specific. */
+@media (prefers-reduced-motion: no-preference) {
+  .vp-doc,
+  .vp-doc *,
+  .VPNavBar *,
+  .VPFooter *,
+  body,
+  .VPNavBar,
+  .VPNavBar .title,
+  .VPNavBar .content-body,
+  .VPNavBarSearch .DocSearch-Button,
+  .VPLocalNav,
+  .VPFooter,
+  .vp-doc div[class*='language-'],
+  .vp-doc table,
+  .vp-doc th,
+  .vp-doc td,
+  .vp-doc blockquote {
+    transition:
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease,
+      color 0.3s ease;
+  }
+}
+
 /* ---------- navbar ---------- */
 
 /* VitePress lets the sidebar curtain paint the top-left corner on sidebar
@@ -17,4 +52,169 @@
   .VPNavBar.has-sidebar .divider {
     padding-left: 0 !important;
   }
+}
+
+/* ---------- sidebar ---------- */
+
+/* The default theme sets `transition` as a shorthand on the sidebar, which
+   would drop the colour transition above; matching its specificity and
+   declaring after it keeps both. */
+.VPSidebar.VPSidebar {
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    opacity 0.5s,
+    transform 0.25s ease;
+}
+
+/* Keep the theme's springy drawer motion; only the colours are added. */
+.VPSidebar.VPSidebar.open {
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    opacity 0.25s,
+    transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* ---------- sidebar surfaces ---------- */
+
+/* The rail shares the page colour; a hairline carries the boundary. On mobile
+   the sidebar is a drawer, so it keeps an opaque background, a shadow and a
+   blurred backdrop to sit above the article. */
+:root {
+  --vp-sidebar-bg-color: var(--vp-c-bg);
+}
+
+@media (min-width: 960px) {
+  .VPSidebar {
+    border-right: 1px solid var(--vp-c-divider);
+  }
+}
+
+/* Rows become pills. Negative margins keep the text on the 32px gutter while
+   the hover background bleeds past it. */
+.VPSidebar .VPSidebarItem.level-1 > .item,
+.VPSidebar .VPSidebarItem.level-2 > .item,
+.VPSidebar .VPSidebarItem.level-3 > .item {
+  margin: 1px calc(var(--nk-sidebar-row) * -1);
+  padding: 0 var(--nk-sidebar-row);
+  border-radius: 8px;
+  transition: background-color 0.2s var(--nk-ease);
+}
+
+.VPSidebar .VPSidebarItem.level-1 > .item:hover,
+.VPSidebar .VPSidebarItem.level-2 > .item:hover,
+.VPSidebar .VPSidebarItem.level-3 > .item:hover {
+  background-color: var(--vp-c-default-soft);
+}
+
+.VPSidebar .VPSidebarItem.level-1.is-active > .item,
+.VPSidebar .VPSidebarItem.level-2.is-active > .item,
+.VPSidebar .VPSidebarItem.level-3.is-active > .item {
+  background-color: var(--vp-c-brand-soft);
+}
+
+/* The floating 2px bar does not follow the rounded rows, so the pill carries
+   the active state instead. */
+.VPSidebar .VPSidebarItem .indicator {
+  display: none;
+}
+
+.VPSidebar .VPSidebarItem .caret {
+  border-radius: 6px;
+  transition:
+    background-color 0.2s var(--nk-ease),
+    color 0.2s var(--nk-ease);
+}
+
+.VPSidebar .VPSidebarItem .caret:hover {
+  background-color: var(--vp-c-default-soft);
+}
+
+.VPSidebar .VPSidebarItem .caret-icon {
+  transition: transform 0.25s var(--nk-ease);
+}
+
+/* Collapsing cannot be animated (VitePress toggles display), but expanding
+   can: the animation replays whenever the list becomes visible again. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes nk-sidebar-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .VPSidebar .VPSidebarItem .items {
+    animation: nk-sidebar-reveal 0.18s var(--nk-ease) both;
+  }
+}
+
+/* ---------- outline ---------- */
+
+/* The active marker is positioned by JS, so only its width and colour are
+   touched here. */
+.VPDocAside .VPDocAsideOutline .content {
+  padding-right: 14px;
+  padding-left: 14px;
+  border-left: 1px solid var(--vp-c-divider);
+  font-size: 13px;
+}
+
+.VPDocAside .outline-title {
+  margin-bottom: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: 0.04em;
+  color: var(--vp-c-text-3);
+}
+
+.VPDocAside .VPDocAsideOutline .outline-link {
+  margin: 0 -8px;
+  padding: 0 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 28px;
+  font-weight: 400;
+  color: var(--vp-c-text-2);
+  transition:
+    color 0.2s var(--nk-ease),
+    background-color 0.2s var(--nk-ease);
+}
+
+.VPDocAside .VPDocAsideOutline .outline-link:hover {
+  background-color: var(--vp-c-default-soft);
+  color: var(--vp-c-text-1);
+}
+
+.VPDocAside .VPDocAsideOutline .outline-link.active {
+  color: var(--vp-c-brand-1);
+}
+
+.VPDocAside .outline-marker {
+  width: 2px;
+  border-radius: 2px;
+}
+
+/* ---------- doc content ---------- */
+
+.vp-doc div[class*='language-'] {
+  border-radius: 10px;
+}
+
+.vp-doc blockquote {
+  border-left-color: var(--vp-c-brand-soft);
+  border-radius: 0 8px 8px 0;
+}
+
+.vp-doc th {
+  background-color: var(--vp-c-bg-alt);
 }

@@ -23,7 +23,8 @@ const resolved = computed(() =>
 const single = computed(() => resolved.value.length === 1)
 const primary = computed(() => resolved.value[0])
 
-const liftOn = 'has-[.nk-card-hit]:hover:-translate-y-0.5 has-[.nk-card-hit]:hover:border-[var(--vp-c-brand-1)]'
+const liftOn =
+  'has-[.nk-card-hit]:hover:-translate-y-0.5 has-[.nk-card-hit]:hover:border-[var(--vp-c-brand-1)] has-[.nk-card-hit]:hover:shadow-[var(--vp-shadow-2)]'
 
 // Tailwind v4 moves elements with the `translate` property, so transitions
 // have to name `translate` — `transform` would animate nothing.
@@ -34,7 +35,7 @@ const iconExternal =
 
 <template>
   <div
-    class="group/card relative flex flex-col gap-2.5 rounded-xl border border-[var(--vp-c-divider)] bg-[var(--vp-c-bg-soft)] px-5 py-[18px] transition-[border-color,background-color,translate] duration-200 max-sm:max-w-none sm:max-w-[380px] motion-reduce:transition-none"
+    class="group/card relative flex flex-col gap-2.5 rounded-xl border border-[var(--vp-c-divider)] bg-[var(--vp-c-bg-soft)] px-5 py-[18px] shadow-[var(--vp-shadow-1)] transition-[border-color,background-color,translate,box-shadow] duration-200 max-sm:max-w-none sm:max-w-[380px] motion-reduce:transition-none"
     :class="single ? liftOn : ''"
   >
     <a
