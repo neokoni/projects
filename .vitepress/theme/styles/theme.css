@@ -256,3 +256,21 @@
     transform: none;
   }
 }
+
+/* ---------- navbar ---------- */
+
+/* VitePress lets the sidebar curtain paint the top-left corner on sidebar
+   pages, splitting the navbar into a grey block and a white block. Keep one
+   continuous bar across the page and let the sidebar start below it.
+   !important is needed: the component styles are scoped and load later. */
+@media (min-width: 960px) {
+  .VPNavBar.has-sidebar,
+  .VPNavBar.has-sidebar .title,
+  .VPNavBar.has-sidebar .content-body {
+    background-color: var(--vp-nav-bg-color) !important;
+  }
+
+  .VPNavBar.has-sidebar .divider {
+    padding-left: 0 !important;
+  }
+}
