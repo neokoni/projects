@@ -13,12 +13,22 @@ order: 1
   "name": "项目名",
   "description": "一句话说明",
   "group": "apps | docs | lab",
-  "type": "docs | external",
-  "slug": "仅 type=docs 需要，必须与 content/<slug>/ 一致",
-  "href": "仅 type=external 需要，完整 http(s) 地址",
+  "links": [
+    { "text": "官网", "href": "https://example.com/" },
+    { "text": "文档", "slug": "handbook" }
+  ],
   "tags": ["可选"]
 }
 ```
+
+每条 `links` 只能在 `slug` 与 `href` 里选一个：写 `slug` 表示站内文档区（必须与 `content/<slug>/` 一致），写 `href` 表示完整 `http(s)` 地址。
+
+卡片怎么渲染由条数决定：
+
+| `links` 条数 | 行为 |
+| --- | --- |
+| 1 条 | 整张卡片就是链接，点击任意位置进入；外链自动 `target="_blank"` |
+| 多条 | 卡片本身不可点，卡内渲染按钮，每个入口一个 |
 
 校验在配置加载时执行，`dev` 和 `build` 都会跑，出错直接中断并列出所有问题（而不是只报第一条）。
 

@@ -19,15 +19,19 @@ for (const project of data.projects) {
   const at = `project "${project.name ?? '(unnamed)'}"`
   if (!project.name) problems.push(`${at}: missing name`)
   if (!groupIds.has(project.group)) problems.push(`${at}: unknown group "${project.group}"`)
-  if (project.type === 'docs') {
-    if (!project.slug) problems.push(`${at}: type=docs requires slug`)
-    else if (!existsSync(join(contentDir, project.slug, 'docs', LANG))) {
-      problems.push(`${at}: content/${project.slug}/docs/${LANG}/ does not exist`)
+  if (!Array.isArray(project.links) || project.links.length === 0) {
+    problems.push(`${at}: links must be a non-empty array`)
+    continue
+  }
+  for (const link of project.links) {
+    const where = `${at}: link "${link.text ?? '?'}"`
+    if (!link.text) problems.push(`${at}: every link needs text`)
+    if (link.slug && link.href) problems.push(`${where} cannot have both slug and href`)
+    if (!link.slug && !link.href) problems.push(`${where} needs slug or href`)
+    if (link.slug && !existsSync(join(contentDir, link.slug, 'docs', LANG))) {
+      problems.push(`${where}: content/${link.slug}/docs/${LANG}/ does not exist`)
     }
-  } else if (project.type === 'external') {
-    if (!/^https?:\/\//.test(project.href ?? '')) problems.push(`${at}: type=external requires an http(s) href`)
-  } else {
-    problems.push(`${at}: type must be docs or external`)
+    if (link.href && !/^https?:\/\//.test(link.href)) problems.push(`${where}: href must be http(s)`)
   }
 }
 
@@ -108,11 +112,14 @@ function buildSidebar(slug) {
   return [...(loose.length ? [{ text: '概览', items: loose }] : []), ...groups]
 }
 
+const docsSlugs = [
+  ...new Set(data.projects.flatMap((project) => project.links).filter((link) => link.slug).map((link) => link.slug))
+]
+
 const sidebar = {}
-for (const project of data.projects) {
-  if (project.type !== 'docs') continue
-  const items = buildSidebar(project.slug)
-  if (items) sidebar[`/${project.slug}/docs/${LANG}/`] = items
+for (const slug of docsSlugs) {
+  const items = buildSidebar(slug)
+  if (items) sidebar[`/${slug}/docs/${LANG}/`] = items
 }
 
 /* ---------- site config ---------- */

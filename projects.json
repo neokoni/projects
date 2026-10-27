@@ -30,33 +30,31 @@
       "name": "LightTickets",
       "description": "轻量工单系统，前后端分离，自带 API 文档。",
       "group": "apps",
-      "type": "external",
-      "href": "https://lighttickets.example.com/",
-      "tags": ["TypeScript", "自托管"],
-      "repo": "https://github.com/neokoni/LightTickets"
+      "links": [{ "text": "访问", "href": "https://lighttickets.example.com/" }],
+      "tags": ["TypeScript", "自托管"]
     },
     {
       "name": "项目手册",
       "description": "这个站点自身的使用说明：文档放哪里、侧边栏怎么生成、改完怎么上线。",
       "group": "docs",
-      "type": "docs",
-      "slug": "handbook",
+      "links": [
+        { "text": "在线阅读", "slug": "handbook" },
+        { "text": "源码", "href": "https://github.com/neokoni/projects.neokoni.ink" }
+      ],
       "tags": ["本站", "VitePress"]
     },
     {
       "name": "Craft233 文档站",
       "description": "Minecraft 服务器文档，独立仓库、独立域名，作为站外链接示例。",
       "group": "docs",
-      "type": "external",
-      "href": "https://docs.craft233.cn/",
+      "links": [{ "text": "文档", "href": "https://docs.craft233.cn/" }],
       "tags": ["Minecraft"]
     },
     {
       "name": "OTA 分发站",
       "description": "系统更新包的发布与分发页面。",
       "group": "lab",
-      "type": "external",
-      "href": "https://ota.neokoni.ink/",
+      "links": [{ "text": "访问", "href": "https://ota.neokoni.ink/" }],
       "tags": ["发布"]
     }
   ]

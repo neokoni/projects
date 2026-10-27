@@ -19,7 +19,9 @@ ci: deploy the whole dist directory with scp-action
 ## 2 数据源
 
 - `projects.json` 是项目数据的唯一来源：分组、条目、链接类型都从这里来，不得在组件或 Markdown 里硬编码项目列表。
-- 新增条目只加数据，不改渲染代码；`type` 只能是 `docs` 或 `external`，`docs` 需要 `slug`，`external` 需要完整 `http(s)` URL，`group` 必须是已有分组 id。校验在配置加载时执行，`dev` 与 `build` 都会中断并列出全部问题。
+- 新增条目只加数据，不改渲染代码。每个项目用 `links` 数组描述入口，每条只能有 `slug`（站内文档，须与 `content/<slug>/` 一致）或 `href`（完整 `http(s)` 地址）之一。
+- 一条 `links` 时整卡可点，多条时卡内渲染按钮——这个分支由组件按数组长度决定，不要为单个项目写特例。
+- 校验在配置加载时执行，`dev` 与 `build` 都会中断并列出全部问题。
 
 ## 3 路径不变量
 

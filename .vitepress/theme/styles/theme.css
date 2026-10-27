@@ -122,12 +122,20 @@
   transition: border-color 0.2s, background-color 0.2s, transform 0.2s;
 }
 
-.nk-card:hover {
+/* Only a card that is itself a link lifts; multi-entry cards respond per button. */
+.nk-card:has(.nk-card-hit):hover {
   border-color: var(--vp-c-brand-1);
   transform: translateY(-2px);
 }
 
-.nk-card:focus-visible {
+.nk-card-hit {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+.nk-card-hit:focus-visible {
   outline: 2px solid var(--vp-c-brand-1);
   outline-offset: 2px;
 }
@@ -179,7 +187,8 @@
   line-height: 1.65;
 }
 
-.nk-kind.is-internal {
+.nk-kind.is-internal,
+.nk-link.is-internal {
   background-color: var(--vp-c-brand-soft);
   color: var(--vp-c-brand-1);
 }
@@ -187,6 +196,50 @@
 .nk-kind.is-external {
   background-color: var(--vp-c-default-soft);
   color: var(--vp-c-text-2);
+}
+
+.nk-card-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.nk-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--vp-c-text-2);
+  background-color: var(--vp-c-default-soft);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.nk-link:hover {
+  color: var(--vp-c-brand-1);
+  background-color: var(--vp-c-brand-soft);
+}
+
+.nk-link-icon {
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+.nk-link:hover .nk-link-icon {
+  transform: translateX(2px);
+}
+
+.nk-link.is-external:hover .nk-link-icon {
+  transform: translate(1px, -1px);
+}
+
+.nk-link:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
 }
 
 .nk-tag {
@@ -253,8 +306,14 @@
 
 @media (prefers-reduced-motion: reduce) {
   .nk-card,
-  .nk-arrow {
+  .nk-arrow,
+  .nk-link,
+  .nk-link-icon {
     transition: none;
+  }
+
+  .nk-link:hover .nk-link-icon {
+    transform: none;
   }
 
   .nk-card:hover {

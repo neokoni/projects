@@ -25,13 +25,12 @@ projects.json                     项目数据的唯一来源
 
 ## 加一个项目
 
-**外部链接**：在 `projects.json` 加一条 `type: "external"`，`href` 写完整 URL，卡片自动 `target="_blank"`。
+在 `projects.json` 的 `projects` 里加一条，`links` 数组决定卡片形态：
 
-**站内文档**：
+- **一条链接**：整张卡片可点。外部站点写 `{ "text": "访问", "href": "https://..." }`，站内文档写 `{ "text": "在线阅读", "slug": "<slug>" }`。
+- **多条链接**：卡片不再整块可点，卡内渲染一排按钮（如官网 + 文档 + 源码各一个）。
 
-1. 建 `content/<slug>/docs/zh-cn/`，放一个 `index.md` 作落地页；
-2. 在 `projects.json` 加一条 `type: "docs"`、`slug` 相同的条目；
-3. 完成——侧边栏由目录扫描生成，不用改配置。`slug` 与目录对不上时 `dev` / `build` 会直接报错。
+站内文档还要建目录 `content/<slug>/docs/zh-cn/`（放一个 `index.md`）。`slug` 与目录对不上时 `dev` / `build` 会直接报错。
 
 ## 侧边栏规则
 

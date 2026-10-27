@@ -2,14 +2,18 @@
 import { computed } from 'vue'
 import ProjectCard from './ProjectCard.vue'
 
+interface CardLink {
+  text: string
+  slug?: string
+  href?: string
+}
+
 interface Project {
   name: string
   description?: string
   group: string
-  type: 'docs' | 'external'
-  slug?: string
-  href?: string
   tags?: string[]
+  links: CardLink[]
 }
 
 const props = defineProps<{
@@ -26,8 +30,9 @@ const groups = computed(() =>
     .filter((group) => group.items.length > 0)
 )
 
-const docsCount = computed(() => props.data.projects.filter((project) => project.type === 'docs').length)
-const externalCount = computed(() => props.data.projects.length - docsCount.value)
+const links = computed(() => props.data.projects.flatMap((project) => project.links))
+const docsCount = computed(() => links.value.filter((link) => link.slug).length)
+const externalCount = computed(() => links.value.filter((link) => link.href).length)
 </script>
 
 <template>
@@ -39,9 +44,9 @@ const externalCount = computed(() => props.data.projects.length - docsCount.valu
       <p class="nk-meta">
         <span>{{ data.projects.length }} 个项目</span>
         <span class="nk-dot" aria-hidden="true">·</span>
-        <span>{{ docsCount }} 个站内文档区</span>
+        <span>{{ docsCount }} 个站内文档</span>
         <span class="nk-dot" aria-hidden="true">·</span>
-        <span>{{ externalCount }} 个外部站点</span>
+        <span>{{ externalCount }} 个外部入口</span>
       </p>
     </header>
 
