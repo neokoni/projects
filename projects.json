@@ -2,7 +2,7 @@
   "site": {
     "title": "Neokoni's Projects",
     "eyebrow": "Projects",
-    "description": "我维护的应用、服务与文档。文档区直接挂在这个域名下的 /<项目>/docs/zh-cn/，其余条目跳转到各自的外部站点。",
+    "description": "我维护的服务、项目与文档。站内文档直接挂在这个域名下的 /<项目>/docs/zh-cn/，其余入口跳转到各自的外部站点。",
     "url": "https://projects.neokoni.ink",
     "icon": "https://res.neokoni.ink/neokoni/svg/favicon.svg",
     "author": "Neokoni",
@@ -10,52 +10,76 @@
   },
   "groups": [
     {
-      "id": "apps",
-      "title": "应用与服务",
-      "description": "可以直接访问的成品"
+      "id": "projects",
+      "title": "项目",
+      "description": "自己写的应用"
     },
     {
-      "id": "docs",
-      "title": "文档",
-      "description": "站内维护的文档区，或指向独立文档站"
+      "id": "services",
+      "title": "服务与 API",
+      "description": "常驻运行的服务与接口"
     },
     {
-      "id": "lab",
-      "title": "实验与归档",
-      "description": "还在折腾、可能随时变动的东西"
+      "id": "other",
+      "title": "其他",
+      "description": "外部站点与组织入口"
     }
   ],
   "projects": [
     {
-      "name": "LightTickets",
-      "description": "轻量工单系统，前后端分离，自带 API 文档。",
-      "group": "apps",
-      "links": [{ "text": "访问", "href": "https://lighttickets.example.com/" }],
-      "tags": ["TypeScript", "自托管"]
-    },
-    {
-      "name": "项目手册",
-      "description": "这个站点自身的使用说明：文档放哪里、侧边栏怎么生成、改完怎么上线。",
-      "group": "docs",
+      "name": "OTA 日志站",
+      "description": "系统更新包的发布记录与分发页面。",
+      "group": "services",
       "links": [
-        { "text": "在线阅读", "slug": "handbook" },
-        { "text": "源码", "href": "https://github.com/neokoni/projects.neokoni.ink" }
+        {
+          "text": "访问",
+          "href": "https://ota.neokoni.ink/"
+        }
       ],
-      "tags": ["本站", "VitePress"]
+      "tags": [
+        "发布"
+      ]
     },
     {
-      "name": "Craft233 文档站",
-      "description": "Minecraft 服务器文档，独立仓库、独立域名，作为站外链接示例。",
-      "group": "docs",
-      "links": [{ "text": "文档", "href": "https://docs.craft233.cn/" }],
-      "tags": ["Minecraft"]
+      "name": "LightTickets",
+      "description": "轻量工单系统，前后端分离，自带 API。",
+      "group": "projects",
+      "links": [
+        {
+          "text": "文档",
+          "slug": "lighttickets"
+        },
+        {
+          "text": "源码",
+          "href": "https://github.com/neokoni/LightTickets"
+        }
+      ],
+      "tags": [
+        "TypeScript",
+        "自托管"
+      ]
     },
     {
-      "name": "OTA 分发站",
-      "description": "系统更新包的发布与分发页面。",
-      "group": "lab",
-      "links": [{ "text": "访问", "href": "https://ota.neokoni.ink/" }],
-      "tags": ["发布"]
+      "name": "Craft233",
+      "description": "Minecraft 服务器，官网、文档与组织入口。",
+      "group": "other",
+      "links": [
+        {
+          "text": "官网",
+          "href": "https://www.craft233.cn/"
+        },
+        {
+          "text": "文档",
+          "href": "https://docs.craft233.cn/"
+        },
+        {
+          "text": "组织",
+          "href": "https://github.com/Craft233MC"
+        }
+      ],
+      "tags": [
+        "Minecraft"
+      ]
     }
   ]
 }

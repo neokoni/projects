@@ -12,7 +12,7 @@ order: 1
 {
   "name": "项目名",
   "description": "一句话说明",
-  "group": "apps | docs | lab",
+  "group": "services | projects | other",
   "links": [
     { "text": "官网", "href": "https://example.com/" },
     { "text": "文档", "slug": "handbook" }

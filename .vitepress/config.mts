@@ -112,14 +112,13 @@ function buildSidebar(slug) {
   return [...(loose.length ? [{ text: '概览', items: loose }] : []), ...groups]
 }
 
-const docsSlugs = [
-  ...new Set(data.projects.flatMap((project) => project.links).filter((link) => link.slug).map((link) => link.slug))
-]
-
+// Sidebar keys come from the content tree, not from projects.json: a docs area
+// keeps its sidebar even while it is still unlisted on the homepage.
 const sidebar = {}
-for (const slug of docsSlugs) {
-  const items = buildSidebar(slug)
-  if (items) sidebar[`/${slug}/docs/${LANG}/`] = items
+for (const entry of readdirSync(contentDir, { withFileTypes: true })) {
+  if (!entry.isDirectory()) continue
+  const items = buildSidebar(entry.name)
+  if (items?.length) sidebar[`/${entry.name}/docs/${LANG}/`] = items
 }
 
 /* ---------- site config ---------- */
