@@ -8,14 +8,47 @@
 
 /* ---------- theme switch ---------- */
 
-/* Surfaces and text fade between light and dark instead of snapping. Only
-   elements without a stronger transition of their own pick this up: the
-   component and nav rules are more specific. */
-@media (prefers-reduced-motion: no-preference) {
-  .vp-doc,
-  .vp-doc *,
-  .VPNavBar *,
-  .VPFooter *,
+/* Colour changes cross-fade even when the system asks for reduced motion: a
+   hue shift is not motion, and snapping white to black is the harsher result.
+   Motion (height, translate) stays gated on the preference elsewhere.
+
+   The canvas is painted from <html>, so it carries the background too: with
+   only <body> painted, some browsers swap the viewport colour at once and the
+   fade is invisible. */
+html {
+  background-color: var(--vp-c-bg);
+}
+
+html,
+body,
+.VPNavBar,
+.VPNavBar .title,
+.VPNavBar .content-body,
+.VPNavBarSearch .DocSearch-Button,
+.VPLocalNav,
+.VPFooter,
+.VPFooter *,
+.VPNavBar *,
+.vp-doc,
+.vp-doc *,
+.vp-doc div[class*='language-'],
+.vp-doc table,
+.vp-doc th,
+.vp-doc td,
+.vp-doc blockquote {
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    color 0.35s ease;
+}
+
+/* The theme hard-disables every transition under `prefers-reduced-motion:
+   reduce` (`transition-duration: 0s !important`), which turns the switch into
+   a white-to-black flash. Keep that reset for motion, but give the colour
+   fade its duration back. */
+@media (prefers-reduced-motion: reduce) {
+  html,
   body,
   .VPNavBar,
   .VPNavBar .title,
@@ -23,16 +56,25 @@
   .VPNavBarSearch .DocSearch-Button,
   .VPLocalNav,
   .VPFooter,
+  .VPFooter *,
+  .VPNavBar *,
+  .vp-doc,
+  .vp-doc *,
   .vp-doc div[class*='language-'],
   .vp-doc table,
   .vp-doc th,
   .vp-doc td,
   .vp-doc blockquote {
+    transition-duration: 0.35s !important;
+  }
+
+  /* The drawer keeps its colours animated; its motion stays off. */
+  .VPSidebar.VPSidebar,
+  .VPSidebar.VPSidebar.open {
     transition:
-      background-color 0.3s ease,
-      border-color 0.3s ease,
-      box-shadow 0.3s ease,
-      color 0.3s ease;
+      background-color 0.35s ease,
+      border-color 0.35s ease,
+      box-shadow 0.35s ease !important;
   }
 }
 
