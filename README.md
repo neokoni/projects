@@ -19,7 +19,7 @@ content/
 └── handbook/docs/zh-cn/          站内文档区 → /handbook/docs/zh-cn/
 .vitepress/
 ├── config.mts                    数据校验 + 侧边栏生成 + VitePress 配置
-└── theme/                        卡片与首页组件、样式
+└── theme/                        卡片与首页组件（样式用 Tailwind 写在模板里）
 projects.json                     项目数据的唯一来源
 ```
 
@@ -35,6 +35,10 @@ projects.json                     项目数据的唯一来源
 ## 侧边栏规则
 
 `content/<slug>/docs/zh-cn/` 下的每个子目录是一个分组，分组的名字和链接来自该目录的 `index.md`；其余 `.md` 变成条目，文案取自文件的一级标题。所以改标题就等于改菜单。
+
+## 样式
+
+组件样式是模板里的 Tailwind 工具类，`.vitepress/theme/styles/` 下只有两个文件：`tailwind.css` 引入 Tailwind（不带 preflight，utilities 留在 `@layer` 之外，否则会被 VitePress 未分层的样式整体压过），`overrides.css` 只覆盖 VitePress 自身（导航栏通栏那段）。
 
 ## 部署
 

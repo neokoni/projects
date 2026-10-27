@@ -26,7 +26,7 @@ content/
 ## 加一个文档区
 
 1. 建目录 `content/<slug>/docs/zh-cn/`，放一个 `index.md` 作为落地页；
-2. 在 `projects.json` 里加一条 `type: "docs"`、`slug` 相同的条目；
+2. 在 `projects.json` 里加一条带 `slug` 链接的条目（`links: [{ "text": "在线阅读", "slug": "<slug>" }]`）；
 3. 侧边栏会自动出现，不需要改配置。
 
 `dev` 与 `build` 加载配置时会校验 `slug` 与实际目录，对不上直接报错，不会带着 404 上线。

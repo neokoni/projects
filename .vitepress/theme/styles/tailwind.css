@@ -1,0 +1,15 @@
+/* Tailwind without preflight: VitePress ships its own base styles and a reset
+   would fight them. Only theme tokens and utilities are pulled in. */
+
+@import "tailwindcss/theme.css" layer(theme);
+
+/* Utilities stay unlayered on purpose: VitePress styles are unlayered too, and
+   an unlayered rule always beats a layered one, so utilities inside
+   `@layer utilities` would lose to plain `h1 { font-size: inherit }` rules. */
+@import "tailwindcss/utilities.css";
+
+/* VitePress toggles a `.dark` class instead of using prefers-color-scheme. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Auto-detection skips dot-directories, so the theme components need telling. */
+@source "../components/**/*.vue";

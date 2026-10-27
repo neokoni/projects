@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { basename, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vitepress'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
@@ -132,6 +133,10 @@ export default defineConfig({
   outDir: distDir,
   cleanUrls: true,
   sitemap: { hostname: data.site.url },
+
+  vite: {
+    plugins: [tailwindcss()]
+  },
 
   head: [
     ['link', { rel: 'icon', href: data.site.icon }],

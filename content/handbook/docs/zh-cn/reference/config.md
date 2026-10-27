@@ -45,13 +45,19 @@ order: 1
 
 ## 样式
 
-卡片与网格的尺寸都在 `.vitepress/theme/styles/theme.css` 的 `.nk-home` 里：
+组件的样式就是模板里的 Tailwind 工具类，没有单独的组件样式表。尺寸直接写在类名上：
 
-| 变量 | 默认 | 作用 |
+| 位置 | 类名 | 作用 |
 | --- | --- | --- |
-| `--nk-card-max` | `380px` | 单卡宽度上限，避免大屏被拉成通栏 |
-| `--nk-grid-min` | `272px` | 最小列宽，决定几列 |
+| 卡片宽度 | `sm:max-w-[380px]` | 单卡上限，避免大屏被拉成通栏 |
+| 项目网格 | `sm:grid-cols-[repeat(auto-fill,minmax(272px,1fr))]` | 最小列宽决定几列 |
+| 文档网格 | `sm:grid-cols-[repeat(auto-fill,minmax(240px,1fr))]` | 文档卡片比项目卡片窄一档 |
 
-颜色一律走 VitePress 的 `--vp-c-*` 变量，亮色/暗色自动跟随，不要写死色值。
+颜色一律走 `--vp-c-*` 与 `--vp-button-*` 变量，亮色/暗色自动跟随，不要写死色值。
 
-导航栏在所有页面是同一条通栏。VitePress 默认会在有侧边栏的页面上，用侧边栏的「帘子」盖住导航栏左半边，形成左灰右白的拼接；`theme.css` 末尾把 `has-sidebar` 的透明背景改回 `--vp-nav-bg-color`，让侧边栏从导航栏下方开始。改导航相关样式时别把那段删掉。
+`.vitepress/theme/styles/` 下只有两个文件：
+
+- `tailwind.css`：引入 Tailwind。不带 preflight——VitePress 有自己的基础样式，重置会互相打架；utilities 故意不放进 `@layer`，因为 VitePress 的样式是未分层的，分层规则永远输给它，`main { display: block }` 这类普通规则就会盖掉 `.flex`。
+- `overrides.css`：只放覆盖 VitePress 自身的规则。
+
+导航栏在所有页面是同一条通栏。VitePress 默认会在有侧边栏的页面上，用侧边栏的「帘子」盖住导航栏左半边，形成左灰右白的拼接；`overrides.css` 把 `has-sidebar` 的透明背景改回 `--vp-nav-bg-color`，让侧边栏从导航栏下方开始。改导航相关样式时别把那段删掉。

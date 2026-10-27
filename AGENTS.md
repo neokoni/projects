@@ -38,6 +38,8 @@ ci: deploy the whole dist directory with scp-action
 
 - 注释使用英文，且只写必要说明，不复述代码。
 - 颜色一律走 `--vp-c-*` 变量，亮暗色自动跟随，不要写死色值。
+- 组件样式用 Tailwind 工具类写在模板里，不新增组件级 CSS；只有覆盖 VitePress 自身样式才写 `styles/overrides.css`。
+- `styles/tailwind.css` 里的 utilities 必须留在 `@layer` 之外：VitePress 的样式未分层，分层规则会被它整体压过。新增组件目录时记得补 `@source`。
 - 卡片与首页组件只保留一份，位于 `.vitepress/theme/components/`，页面里不要重复实现布局。
 - 脚本不打印提示文案，入口与端口写在 README。
 
