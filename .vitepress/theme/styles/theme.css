@@ -1,0 +1,258 @@
+.nk-home {
+  --nk-grid-min: 272px;
+  --nk-card-max: 380px;
+
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 8px 24px 96px;
+}
+
+.nk-home a {
+  text-decoration: none;
+}
+
+/* ---------- hero ---------- */
+
+.nk-hero {
+  padding: 56px 0 8px;
+}
+
+.nk-hero--compact {
+  padding: 40px 0 0;
+}
+
+.nk-eyebrow {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--vp-c-text-3);
+}
+
+.nk-hero h1 {
+  margin: 0;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.nk-lede {
+  max-width: 62ch;
+  margin: 14px 0 0;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--vp-c-text-2);
+}
+
+.nk-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 18px 0 0;
+  font-size: 13px;
+  color: var(--vp-c-text-3);
+}
+
+.nk-dot {
+  opacity: 0.5;
+}
+
+.nk-back {
+  color: var(--vp-c-brand-1);
+}
+
+.nk-back:hover {
+  color: var(--vp-c-brand-2);
+}
+
+/* ---------- groups ---------- */
+
+.nk-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+  margin-top: 44px;
+}
+
+.nk-group-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.nk-group-head h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+}
+
+.nk-group-head p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--vp-c-text-3);
+}
+
+.nk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--nk-grid-min), 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+/* ---------- card ---------- */
+
+.nk-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: var(--nk-card-max);
+  padding: 18px 20px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  background-color: var(--vp-c-bg-soft);
+  color: inherit;
+  transition: border-color 0.2s, background-color 0.2s, transform 0.2s;
+}
+
+.nk-card:hover {
+  border-color: var(--vp-c-brand-1);
+  transform: translateY(-2px);
+}
+
+.nk-card:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+}
+
+.nk-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.nk-card-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+}
+
+.nk-arrow {
+  font-size: 14px;
+  color: var(--vp-c-text-3);
+  transition: color 0.2s, transform 0.2s;
+}
+
+.nk-card:hover .nk-arrow {
+  color: var(--vp-c-brand-1);
+  transform: translateX(2px);
+}
+
+.nk-card-desc {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--vp-c-text-2);
+}
+
+.nk-card-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.nk-kind {
+  padding: 2px 7px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 999px;
+  font-size: 11px;
+  color: var(--vp-c-text-3);
+}
+
+.nk-kind.is-internal {
+  border-color: var(--vp-c-brand-1);
+  color: var(--vp-c-brand-1);
+}
+
+.nk-tag {
+  font-size: 11px;
+  color: var(--vp-c-text-3);
+}
+
+.nk-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+/* ---------- docs landing ---------- */
+
+.nk-grid--docs {
+  --nk-grid-min: 240px;
+}
+
+.nk-card--link {
+  gap: 6px;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 640px) {
+  .nk-home {
+    padding: 0 20px 72px;
+  }
+
+  .nk-hero {
+    padding-top: 36px;
+  }
+
+  .nk-hero h1 {
+    font-size: 30px;
+  }
+
+  .nk-lede {
+    font-size: 15px;
+  }
+
+  .nk-groups {
+    margin-top: 32px;
+    gap: 32px;
+  }
+
+  .nk-group-head {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .nk-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nk-card {
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nk-card,
+  .nk-arrow {
+    transition: none;
+  }
+
+  .nk-card:hover {
+    transform: none;
+  }
+}

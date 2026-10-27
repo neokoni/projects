@@ -1,0 +1,48 @@
+# 项目约定
+
+本文件是本仓库的持久约束，贡献者（含 AI）必须遵守。
+
+## 1 提交信息
+
+- **一律使用英文。**
+- 单行标题说清「做了什么」，格式 `<type>: <imperative summary>`，type 取 `feat` / `fix` / `docs` / `refactor` / `style` / `perf` / `build` / `ci` / `chore`。
+- 标题不超过 72 字符，句尾不加句号，不用 `update xxx`、`fix bug` 这类无信息量表述。
+- 只有涉及取舍、迁移、多步操作时才写正文，正文同样英文、手动折行到 72 字符。
+- 一次提交只做一件事；格式化或依赖升级不与功能改动混在一起。
+
+```
+feat: cap project card width at 380px
+fix: keep external links opening in a new tab
+ci: deploy the whole dist directory with scp-action
+```
+
+## 2 数据源
+
+- `projects.json` 是项目数据的唯一来源：分组、条目、链接类型都从这里来，不得在组件或 Markdown 里硬编码项目列表。
+- 新增条目只加数据，不改渲染代码；`type` 只能是 `docs` 或 `external`，`docs` 需要 `slug`，`external` 需要完整 `http(s)` URL，`group` 必须是已有分组 id。校验在配置加载时执行，`dev` 与 `build` 都会中断并列出全部问题。
+
+## 3 路径不变量
+
+- 站内文档 URL 固定为 `/<slug>/docs/zh-cn/`，由 `content/<slug>/docs/zh-cn/` 的目录结构直接决定（`srcDir: 'content'`），不引入 `rewrites` 或跳转桩。
+- `content/` 之外的 Markdown（`README.md`、`AGENTS.md`）不参与构建，不要把页面写到根目录。
+- 侧边栏由目录扫描生成，不要手写 `sidebar` 数组；要让菜单文案变化，改对应文件的一级标题。
+
+## 4 部署
+
+- 单站点：`dist/` 是完整站点，`scp-action` 用 `rm: true` 全量覆盖 `/opt/1panel/www/sites/projects.neokoni.ink/index`。
+- `cleanUrls: true` 依赖服务器的 `try_files $uri $uri.html $uri/ =404`，少了这行线上会出现大量 404，且无法从仓库侧修复。
+
+## 5 代码风格
+
+- 注释使用英文，且只写必要说明，不复述代码。
+- 颜色一律走 `--vp-c-*` 变量，亮暗色自动跟随，不要写死色值。
+- 卡片与首页组件只保留一份，位于 `.vitepress/theme/components/`，页面里不要重复实现布局。
+- 脚本不打印提示文案，入口与端口写在 README。
+
+## 6 命令
+
+```bash
+pnpm dev
+pnpm build
+pnpm preview
+```

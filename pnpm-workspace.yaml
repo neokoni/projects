@@ -1,0 +1,5 @@
+# Single package, but pnpm keeps project settings here: pnpm 11 blocks
+# dependency build scripts by default and esbuild needs its postinstall to
+# install the platform binary.
+allowBuilds:
+  esbuild: true

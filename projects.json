@@ -1,0 +1,63 @@
+{
+  "site": {
+    "title": "Neokoni's Projects",
+    "eyebrow": "Projects",
+    "description": "我维护的应用、服务与文档。文档区直接挂在这个域名下的 /<项目>/docs/zh-cn/，其余条目跳转到各自的外部站点。",
+    "url": "https://projects.neokoni.ink",
+    "icon": "https://res.neokoni.ink/neokoni/svg/favicon.svg",
+    "author": "Neokoni",
+    "repo": "https://github.com/neokoni/projects.neokoni.ink"
+  },
+  "groups": [
+    {
+      "id": "apps",
+      "title": "应用与服务",
+      "description": "可以直接访问的成品"
+    },
+    {
+      "id": "docs",
+      "title": "文档",
+      "description": "站内维护的文档区，或指向独立文档站"
+    },
+    {
+      "id": "lab",
+      "title": "实验与归档",
+      "description": "还在折腾、可能随时变动的东西"
+    }
+  ],
+  "projects": [
+    {
+      "name": "LightTickets",
+      "description": "轻量工单系统，前后端分离，自带 API 文档。",
+      "group": "apps",
+      "type": "external",
+      "href": "https://lighttickets.example.com/",
+      "tags": ["TypeScript", "自托管"],
+      "repo": "https://github.com/neokoni/LightTickets"
+    },
+    {
+      "name": "项目手册",
+      "description": "这个站点自身的使用说明：文档放哪里、侧边栏怎么生成、改完怎么上线。",
+      "group": "docs",
+      "type": "docs",
+      "slug": "handbook",
+      "tags": ["本站", "VitePress"]
+    },
+    {
+      "name": "Craft233 文档站",
+      "description": "Minecraft 服务器文档，独立仓库、独立域名，作为站外链接示例。",
+      "group": "docs",
+      "type": "external",
+      "href": "https://docs.craft233.cn/",
+      "tags": ["Minecraft"]
+    },
+    {
+      "name": "OTA 分发站",
+      "description": "系统更新包的发布与分发页面。",
+      "group": "lab",
+      "type": "external",
+      "href": "https://ota.neokoni.ink/",
+      "tags": ["发布"]
+    }
+  ]
+}

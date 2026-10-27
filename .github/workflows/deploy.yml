@@ -1,0 +1,57 @@
+name: deploy to server
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['main']
+    paths:
+      - 'content/**'
+      - '.vitepress/**'
+      - 'projects.json'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/deploy.yml'
+
+concurrency:
+  group: deploy-site
+  cancel-in-progress: true
+
+env:
+  SITE_ROOT: /opt/1panel/www/sites/projects.neokoni.ink/index
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout source
+        uses: actions/checkout@v4
+
+      - name: setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - name: setup nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: install nodejs depends
+        run: pnpm install --frozen-lockfile
+
+      - name: build website file
+        run: pnpm build
+
+      # Single site: dist/ is the whole site, so the target can be replaced.
+      - name: SSH Server Deploy
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          port: ${{ secrets.SERVER_PORT }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          source: dist/*
+          target: ${{ env.SITE_ROOT }}/
+          rm: true
+          strip_components: 1
