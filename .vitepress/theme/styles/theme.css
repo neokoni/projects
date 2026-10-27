@@ -172,16 +172,21 @@
 }
 
 .nk-kind {
-  padding: 2px 7px;
-  border: 1px solid var(--vp-c-divider);
+  padding: 2px 8px;
   border-radius: 999px;
   font-size: 11px;
-  color: var(--vp-c-text-3);
+  font-weight: 500;
+  line-height: 1.65;
 }
 
 .nk-kind.is-internal {
-  border-color: var(--vp-c-brand-1);
+  background-color: var(--vp-c-brand-soft);
   color: var(--vp-c-brand-1);
+}
+
+.nk-kind.is-external {
+  background-color: var(--vp-c-default-soft);
+  color: var(--vp-c-text-2);
 }
 
 .nk-tag {
