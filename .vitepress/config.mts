@@ -143,7 +143,7 @@ export default defineConfig({
   ],
 
   themeConfig: {
-    siteTitle: 'Neokoni',
+    siteTitle: data.site.title,
     nav: [{ text: '全部项目', link: '/' }],
     socialLinks: data.site.repo ? [{ icon: 'github', link: data.site.repo }] : [],
     sidebar,

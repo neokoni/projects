@@ -18,7 +18,7 @@ interface Project {
 
 const props = defineProps<{
   data: {
-    site: { title: string; description: string; eyebrow?: string }
+    site: { title: string; headline?: string; description: string; eyebrow?: string }
     groups: { id: string; title: string; description?: string }[]
     projects: Project[]
   }
@@ -39,7 +39,7 @@ const externalCount = computed(() => links.value.filter((link) => link.href).len
   <div class="nk-home">
     <header class="nk-hero">
       <p v-if="data.site.eyebrow" class="nk-eyebrow">{{ data.site.eyebrow }}</p>
-      <h1>{{ data.site.title }}</h1>
+      <h1>{{ data.site.headline ?? data.site.title }}</h1>
       <p class="nk-lede">{{ data.site.description }}</p>
       <p class="nk-meta">
         <span>{{ data.projects.length }} 个项目</span>
