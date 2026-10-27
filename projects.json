@@ -2,7 +2,6 @@
   "site": {
     "title": "Neokoni's Projects",
     "headline": "Neokoni的摸鱼项目?",
-    "eyebrow": "Projects",
     "description": "我维护的服务、项目与文档。站内文档直接挂在这个域名下的 /<项目>/docs/zh-cn/，其余入口跳转到各自的外部站点。",
     "url": "https://projects.neokoni.ink",
     "icon": "https://res.neokoni.ink/neokoni/svg/favicon.svg",
@@ -12,18 +11,15 @@
   "groups": [
     {
       "id": "projects",
-      "title": "项目",
-      "description": "自己写的应用"
+      "title": "项目"
     },
     {
       "id": "services",
-      "title": "服务与 API",
-      "description": "常驻运行的服务与接口"
+      "title": "服务与 API"
     },
     {
       "id": "other",
-      "title": "其他",
-      "description": "外部站点与组织入口"
+      "title": "其他"
     }
   ],
   "projects": [

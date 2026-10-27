@@ -21,15 +21,6 @@
   padding: 40px 0 0;
 }
 
-.nk-eyebrow {
-  margin: 0 0 8px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--vp-c-text-3);
-}
-
 .nk-hero h1 {
   margin: 0;
   font-size: 40px;
@@ -56,10 +47,6 @@
   color: var(--vp-c-text-3);
 }
 
-.nk-dot {
-  opacity: 0.5;
-}
-
 .nk-back {
   color: var(--vp-c-brand-1);
 }
@@ -78,10 +65,6 @@
 }
 
 .nk-group-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
   padding-bottom: 12px;
   border-bottom: 1px solid var(--vp-c-divider);
 }
@@ -91,12 +74,6 @@
   font-size: 15px;
   font-weight: 600;
   color: var(--vp-c-text-1);
-}
-
-.nk-group-head p {
-  margin: 0;
-  font-size: 13px;
-  color: var(--vp-c-text-3);
 }
 
 .nk-grid {
@@ -288,11 +265,6 @@
   .nk-groups {
     margin-top: 32px;
     gap: 32px;
-  }
-
-  .nk-group-head {
-    flex-direction: column;
-    gap: 4px;
   }
 
   .nk-grid {
