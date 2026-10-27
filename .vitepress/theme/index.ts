@@ -1,4 +1,5 @@
 import DefaultTheme from 'vitepress/theme'
+import Layout from './Layout.vue'
 import DocsHome from './components/DocsHome.vue'
 import ProjectCard from './components/ProjectCard.vue'
 import ProjectsHome from './components/ProjectsHome.vue'
@@ -7,6 +8,7 @@ import './styles/overrides.css'
 
 export default {
   extends: DefaultTheme,
+  Layout,
   enhanceApp({ app }) {
     app.component('ProjectsHome', ProjectsHome)
     app.component('ProjectCard', ProjectCard)
