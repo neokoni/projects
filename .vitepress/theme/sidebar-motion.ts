@@ -27,8 +27,16 @@ function animate(list: HTMLElement, collapsing: boolean): void {
     return
   }
 
+  // Collapsing only shrinks; expanding also fades in, so a group never pops
+  // into place. The fade is part of this animation rather than a CSS one: a
+  // keyframe animation would restart when the element becomes visible again.
   const motion = list.animate(
-    [{ height: `${collapsing ? full : 0}px` }, { height: `${collapsing ? 0 : full}px` }],
+    collapsing
+      ? [{ height: `${full}px` }, { height: '0px' }]
+      : [
+          { height: '0px', opacity: 0 },
+          { height: `${full}px`, opacity: 1 }
+        ],
     { duration: DURATION, easing: EASING }
   )
 

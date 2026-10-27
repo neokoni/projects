@@ -137,26 +137,6 @@
   transition: transform 0.25s var(--nk-ease);
 }
 
-/* Collapsing cannot be animated (VitePress toggles display), but expanding
-   can: the animation replays whenever the list becomes visible again. */
-@media (prefers-reduced-motion: no-preference) {
-  @keyframes nk-sidebar-reveal {
-    from {
-      opacity: 0;
-      transform: translateY(-4px);
-    }
-
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  .VPSidebar .VPSidebarItem .items {
-    animation: nk-sidebar-reveal 0.18s var(--nk-ease) both;
-  }
-}
-
 /* ---------- outline ---------- */
 
 /* The active marker is positioned by JS, so only its width and colour are
