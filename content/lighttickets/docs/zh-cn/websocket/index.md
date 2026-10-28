@@ -4,12 +4,6 @@ order: 60
 
 # WebSocket 连接
 
-LightTickets 后端通过 Socket.IO 把议题状态变更、新评论和完成钩子推送给 Minecraft 服务器。
-插件只需要维持一条长连接，不必轮询 HTTP 接口就能在游戏内收到通知。
-
-服务端实现位于 `backend/src/socket/index.ts`，广播封装在 `backend/src/socket/events.ts`，
-握手鉴权在 `backend/src/utils/socket-auth.ts`。
-
 ## 传输与路径
 
 | 项目 | 取值 |

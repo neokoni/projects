@@ -4,8 +4,6 @@ order: 50
 
 # Server API
 
-Server API 指后端挂在 `/api/mc/*` 下的一组接口，供 Minecraft 服务器插件（Paper、Folia、Velocity）或自建服务端程序调用，覆盖注册、绑定、玩家会话以及游戏内的议题读写。它和 Web 端接口共用同一套响应结构，但认证与身份来源完全不同。
-
 ## 与 Web 端接口的区别
 
 | 维度 | Web 端接口 | Server API |

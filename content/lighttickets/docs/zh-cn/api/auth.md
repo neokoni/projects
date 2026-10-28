@@ -4,12 +4,6 @@ order: 20
 
 # 认证与账户
 
-本页覆盖站点初始化、注册登录、密码重置、外部登录（OAuth / OIDC）、语言资源与当前用户个人设置。所有端点都在 `/api` 下，响应遵循 [外部 API](./index.md) 的 envelope 约定。
-
-::: tip 当前用户信息从哪里来
-这套 API 没有 `GET /api/users/me`。登录与刷新接口的响应已经包含完整的 `user` 对象；页面刷新时先调 `POST /api/auth/refresh`，用 Cookie 换回新的 `accessToken` 与 `user`。
-:::
-
 ## 初始化与站点配置
 
 ### GET /api/setup/site-config

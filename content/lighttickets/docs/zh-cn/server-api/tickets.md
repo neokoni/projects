@@ -4,10 +4,6 @@ order: 30
 
 # 议题与评论
 
-本组接口覆盖游戏内创建议题、列表、详情、评论与状态流转。读取类接口采用条件鉴权：不带 `X-Player-Session` 时按匿名访客只返回公开议题，管理后台开启「要求登录」后匿名请求直接 401；写入类接口一律要求有效会话。
-
-所有请求体里的 `minecraftUuid` 必须与会话对应的 UUID 完全一致，不一致返回 403（`Minecraft player session does not match requested UUID`）。响应示例只列 envelope 里的 `data`。
-
 ## 创建议题
 
 ### POST /api/mc/tickets

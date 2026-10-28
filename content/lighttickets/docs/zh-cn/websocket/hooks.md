@@ -4,13 +4,6 @@ order: 30
 
 # 完成钩子投递
 
-模板里配置的完成钩子（completion hook）在议题状态变更时由后端解析成具体命令或 MiniMessage，
-通过 `hook:execute` 推给绑定的 Minecraft 服务器。插件执行完必须回执 `hook:ack`，后端据此把投递
-标记为完成；没有回执的投递会被反复重试，直到进入死信。
-
-服务端逻辑集中在 `backend/src/services/minecraft-hook-delivery.service.ts`，回执入口在
-`backend/src/socket/index.ts` 的 `hook:ack` 监听器。
-
 ## 触发时机
 
 只有同时满足以下条件才会产生投递记录：

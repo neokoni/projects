@@ -4,8 +4,6 @@ order: 40
 
 # 模板接口
 
-议题模板以 YAML 文件存放在 `data/templates/`，后端启动时加载进内存缓存。本页的两个端点供提交表单的客户端读取模板清单与字段定义，响应遵循 [外部 API](./index.md) 的 envelope 约定。模板文件本身怎么写见 [模板配置](../template/index.md)，字段类型细节见 [字段类型](../template/fields.md)。
-
 ## 认证
 
 整个路由挂 `authOrServerKeyMiddleware`，两种凭据二选一：

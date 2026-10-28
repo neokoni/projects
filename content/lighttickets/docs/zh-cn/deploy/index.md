@@ -4,8 +4,6 @@ order: 10
 
 # 部署指南
 
-本节说明如何把 LightTickets 从零跑起来：Docker Compose 一键部署、手动部署、Minecraft 插件接入，以及配置、运维与升级的要点。
-
 ## 组件构成
 
 LightTickets 由三部分组成，其中后端是唯一持有数据的服务。

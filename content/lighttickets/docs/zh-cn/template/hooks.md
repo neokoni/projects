@@ -4,8 +4,6 @@ order: 30
 
 # 完成钩子
 
-`completion_hooks` 在议题状态变更为指定值时触发。后端解析占位符后，把命令或消息通过 WebSocket 下发给 Minecraft 插件执行；`selection` 类型则先等 `staff` / `admin` 填写决策，再执行动作。
-
 ## 钩子结构
 
 ```yaml

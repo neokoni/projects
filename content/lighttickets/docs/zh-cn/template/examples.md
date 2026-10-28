@@ -4,8 +4,6 @@ order: 40
 
 # 模板示例
 
-先看一份覆盖完整语法的模板原文，再拆解其余内置模板，最后汇总常用写法。
-
 ## 完整示例
 
 以下内容摘自 `backend/templates/full_example.yml`：

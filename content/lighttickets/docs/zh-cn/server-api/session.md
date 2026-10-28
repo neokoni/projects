@@ -4,8 +4,6 @@ order: 20
 
 # 注册、绑定与会话
 
-玩家在游戏内要与平台建立关系，一共两条路径：新玩家走注册链接直接建号并自动绑定，已有账号的玩家用绑定码把 Minecraft 账号挂到现有账号上。两条路径都会下发一次性可见的 `playerCredential`，之后靠它换取短期 session，再去调用议题接口。本页响应示例只列 envelope 里的 `data`。
-
 ## POST /api/mc/register-link
 
 生成一次性注册链接，游戏内 `/lit register` 使用。只要求 `X-Server-Key`，不需要玩家 session。

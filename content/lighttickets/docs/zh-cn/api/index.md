@@ -4,12 +4,6 @@ order: 40
 
 # 外部 API
 
-外部 API 指后端挂在 `/api` 下、供浏览器端与第三方程序调用的 REST 接口。本组页面覆盖 Web 端 JWT 认证的接口；Minecraft 插件使用的 `/api/mc/*` 见 [Server API](../server-api/index.md)，实时推送见 [WebSocket 连接](../websocket/index.md)。
-
-::: warning 接口仍在变动
-LightTickets 处于 WIP 阶段，字段与状态值可能调整，且不承诺向后兼容。升级前请备份数据库与 `data/` 目录。
-:::
-
 ## 基址与内容类型
 
 | 项 | 值 |

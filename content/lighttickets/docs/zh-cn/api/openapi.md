@@ -4,12 +4,6 @@ order: 60
 
 # OpenAPI 规范
 
-LightTickets 的 OpenAPI 文档由代码生成，不是手写文件：路由定义旁的 Zod schema 经 `@asteasolutions/zod-to-openapi` 转成 OpenAPI 3.0.3 文档，产物是仓库根目录下的 `backend/openapi.json`，同时前端类型也由它派生。
-
-::: tip 文档与代码不一致时以代码为准
-`openapi.json` 是**生成产物**，描述的是生成那一刻的路由与 schema。接口仍在变动期，如果规范与运行时行为冲突，请读 `backend/src/routes/` 与 `backend/src/schemas/` 下的源码，或直接看本组页面中的说明。
-:::
-
 ## 产物与运行时端点
 
 | 项 | 值 |

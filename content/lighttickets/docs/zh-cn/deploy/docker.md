@@ -4,8 +4,6 @@ order: 20
 
 # Docker Compose 部署
 
-仓库根目录的 `docker-compose.yml` 会构建后端与前端两个镜像，并把宿主机 `./data` 挂载为后端数据目录。适合生产环境与快速试用。
-
 ## 架构
 
 ```text

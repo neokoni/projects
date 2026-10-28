@@ -4,17 +4,6 @@ order: 30
 
 # 议题、评论与附件
 
-议题是系统的核心资源，评论、附件、审计日志与标签都挂在议题之下。本页所有端点都需要 `Authorization: Bearer <accessToken>` 或按「可选 bearer」说明处理，响应遵循 [外部 API](./index.md) 的 envelope 约定。
-
-议题状态值：
-
-| 值 | 含义 |
-| --- | --- |
-| `open` | 开放 |
-| `in_progress` | 处理中 |
-| `closed` | 已关闭 |
-| `invalid` | 无效 |
-
 ## 议题
 
 ### POST /api/tickets

@@ -4,8 +4,6 @@ order: 30
 
 # 手动部署
 
-不适用 Docker 时，可以用 Node 直接运行后端与前端。两者是独立的进程：后端起在 23320，前端 `server.mjs` 起在 23310 并把 `/api`、`/socket.io` 转发给后端。
-
 ## 前置条件
 
 - Node 24（两个镜像的 `ARG NODE_VERSION` 默认都是 `24`，CI 使用 26，两者都可运行）

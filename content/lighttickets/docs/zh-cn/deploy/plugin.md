@@ -4,8 +4,6 @@ order: 40
 
 # Minecraft 插件部署
 
-插件把 Minecraft 服务器接进 LightTickets：玩家可以在游戏内创建议题（ticket）、查看列表与详情、评论、接收状态变更通知，也可以绑定网页账号。
-
 ## 支持的平台
 
 | 平台 | 模块 | 说明 |

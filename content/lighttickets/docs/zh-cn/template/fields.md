@@ -4,8 +4,6 @@ order: 20
 
 # 字段类型
 
-`body` 是字段数组，每个元素描述一个表单项。类型取值来自 `backend/src/services/template.service.ts` 的 `TemplateField`：`markdown`、`input`、`textarea`、`checkboxes`、`dropdown`、`select_input`、`player_select`。除 `markdown` 外都必须提供非空 `id`。
-
 ## 总览
 
 | 类型 | 用途 | 是否提交值 |

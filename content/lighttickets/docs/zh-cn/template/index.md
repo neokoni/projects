@@ -4,12 +4,6 @@ order: 30
 
 # 议题模板
 
-模板是一份 YAML 定义，它同时决定三件事：
-
-- 创建该模板的议题时，前台显示哪些表单字段（`body`）。
-- 议题创建后，正文 Markdown 长什么样（由 `body` 的字段类型渲染而来）。
-- 议题状态变更时，执行哪些命令、消息或人工决策（`completion_hooks`）。
-
 ## 文件位置与加载顺序
 
 内置模板随源码发布在 `backend/templates/`，运行时真正读取的是数据目录 `data/templates/`。启动流程由 `backend/src/services/template.service.ts` 的 `initTemplates()` 完成：

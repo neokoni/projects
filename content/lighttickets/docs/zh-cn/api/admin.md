@@ -4,12 +4,6 @@ order: 50
 
 # 管理后台 API
 
-本页覆盖 `/api/admin/*`、`/api/setup/settings*`、`/api/branding/*`、`/api/servers` 与 `/api/users` 的管理端点，即管理后台前端使用的接口。响应遵循 [外部 API](./index.md) 的 envelope 约定，界面操作说明见 [管理后台](../guide/admin.md)。
-
-::: warning 几乎全部需要 admin
-除三个例外，本页所有端点都要求 `Authorization: Bearer <accessToken>` 且角色为 `admin`：`GET /api/branding/:slot`（公开读取）、`GET /api/player-groups/search`（任意登录用户）、`GET /api/users/assignable`（`staff` / `admin`）。缺少或失效的 token 返回 `401`，角色不足返回 `403`。
-:::
-
 ## 站点设置
 
 | 方法 | 路径 | 说明 |
