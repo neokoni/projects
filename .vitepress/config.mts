@@ -2,7 +2,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { basename, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
-import { defineConfig } from 'vitepress'
+import { defineConfig, type DefaultTheme } from 'vitepress'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 const contentDir = join(root, 'content')
@@ -16,9 +16,19 @@ const data = JSON.parse(readFileSync(join(root, 'projects.json'), 'utf8'))
 const groupIds = new Set(data.groups.map((group) => group.id))
 const problems = []
 
+if (!data.site.headline_en) problems.push('site: missing headline_en')
+if (!data.site.description_en) problems.push('site: missing description_en')
+
+for (const group of data.groups) {
+  if (!group.title_en) problems.push(`group "${group.id}": missing title_en`)
+}
+
 for (const project of data.projects) {
   const at = `project "${project.name ?? '(unnamed)'}"`
   if (!project.name) problems.push(`${at}: missing name`)
+  if (!project.name_en) problems.push(`${at}: missing name_en`)
+  if (project.description && !project.description_en) problems.push(`${at}: missing description_en`)
+  if (project.tags && !Array.isArray(project.tags_en)) problems.push(`${at}: tags need a matching tags_en array`)
   if (!groupIds.has(project.group)) problems.push(`${at}: unknown group "${project.group}"`)
   if (!Array.isArray(project.links) || project.links.length === 0) {
     problems.push(`${at}: links must be a non-empty array`)
@@ -27,6 +37,7 @@ for (const project of data.projects) {
   for (const link of project.links) {
     const where = `${at}: link "${link.text ?? '?'}"`
     if (!link.text) problems.push(`${at}: every link needs text`)
+    if (!link.text_en) problems.push(`${where}: missing text_en`)
     if (link.slug && link.href) problems.push(`${where} cannot have both slug and href`)
     if (!link.slug && !link.href) problems.push(`${where} needs slug or href`)
     if (link.slug && !existsSync(join(contentDir, link.slug, 'docs', LANG))) {
@@ -124,6 +135,32 @@ for (const entry of readdirSync(contentDir, { withFileTypes: true })) {
 
 /* ---------- site config ---------- */
 
+const year = new Date().getFullYear()
+const copyright = `© ${year} ${data.site.author ?? ''}`.trim()
+
+// Only the two homepages are translated, so a language link has to land on the
+// other locale's home: the mirrored path (`/en/lighttickets/docs/zh-cn/`) would
+// not exist. `i18nRouting` is read at runtime but missing from the theme types.
+const themeConfig: DefaultTheme.Config & { i18nRouting?: boolean } = {
+  siteTitle: data.site.title,
+  nav: [{ text: '全部项目', link: '/' }],
+  socialLinks: data.site.repo ? [{ icon: 'github', link: data.site.repo }] : [],
+  sidebar,
+  search: { provider: 'local' },
+  outline: { level: [2, 3], label: '本页目录' },
+  docFooter: { prev: '上一篇', next: '下一篇' },
+  editLink: {
+    pattern: `${data.site.repo}/edit/main/content/:path`,
+    text: '在 GitHub 编辑此页'
+  },
+  footer: { message: '索引我维护的项目、服务与文档。', copyright },
+  darkModeSwitchLabel: '外观',
+  sidebarMenuLabel: '目录',
+  returnToTopLabel: '回到顶部',
+  langMenuLabel: '切换语言',
+  i18nRouting: false
+}
+
 export default defineConfig({
   lang: 'zh-CN',
   title: data.site.title,
@@ -147,24 +184,28 @@ export default defineConfig({
     ['link', { rel: 'canonical', href: data.site.url }]
   ],
 
-  themeConfig: {
-    siteTitle: data.site.title,
-    nav: [{ text: '全部项目', link: '/' }],
-    socialLinks: data.site.repo ? [{ icon: 'github', link: data.site.repo }] : [],
-    sidebar,
-    search: { provider: 'local' },
-    outline: { level: [2, 3], label: '本页目录' },
-    docFooter: { prev: '上一篇', next: '下一篇' },
-    editLink: {
-      pattern: `${data.site.repo}/edit/main/content/:path`,
-      text: '在 GitHub 编辑此页'
-    },
-    footer: {
-      message: '索引我维护的项目、服务与文档。',
-      copyright: `© ${new Date().getFullYear()} ${data.site.author ?? ''}`.trim()
-    },
-    darkModeSwitchLabel: '外观',
-    sidebarMenuLabel: '目录',
-    returnToTopLabel: '回到顶部'
-  }
+  locales: {
+    root: { label: '简体中文', lang: 'zh-CN' },
+    en: {
+      label: 'English',
+      lang: 'en',
+      link: '/en/',
+      description: data.site.description_en,
+      head: [
+        ['meta', { property: 'og:description', content: data.site.description_en }],
+        ['meta', { property: 'og:locale', content: 'en_US' }],
+        ['meta', { property: 'og:url', content: `${data.site.url}/en/` }]
+      ],
+      themeConfig: {
+        nav: [{ text: 'All projects', link: '/en/' }],
+        footer: { message: 'An index of the projects, services and docs I maintain.', copyright },
+        darkModeSwitchLabel: 'Appearance',
+        sidebarMenuLabel: 'Contents',
+        returnToTopLabel: 'Back to top',
+        langMenuLabel: 'Change language'
+      }
+    }
+  },
+
+  themeConfig
 })

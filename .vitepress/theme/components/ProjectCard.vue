@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { DOCS_LANG, pick, ui, useLang } from '../i18n'
 
 interface CardLink {
   text: string
@@ -9,14 +10,19 @@ interface CardLink {
 
 const props = defineProps<{
   project: { name: string; description?: string; tags?: string[]; links: CardLink[] }
-  lang?: string
 }>()
+
+const lang = useLang()
+
+const name = computed(() => pick(props.project, 'name', lang.value) ?? '')
+const description = computed(() => pick(props.project, 'description', lang.value))
+const tags = computed(() => pick<string[]>(props.project, 'tags', lang.value) ?? [])
 
 const resolved = computed(() =>
   props.project.links.map((link) => ({
-    text: link.text,
+    text: pick(link, 'text', lang.value) ?? link.text,
     external: Boolean(link.href),
-    href: link.href ?? `/${link.slug}/docs/${props.lang ?? 'zh-cn'}/`
+    href: link.href ?? `/${link.slug}/docs/${DOCS_LANG}/`
   }))
 )
 
@@ -45,11 +51,11 @@ const iconExternal =
       :target="primary.external ? '_blank' : undefined"
       :rel="primary.external ? 'noopener noreferrer' : undefined"
     >
-      <span class="sr-only">{{ project.name }}</span>
+      <span class="sr-only">{{ name }}</span>
     </a>
 
     <span class="flex items-center justify-between gap-3">
-      <span class="text-[15px] font-semibold leading-6 text-[var(--vp-c-text-1)]">{{ project.name }}</span>
+      <span class="text-[15px] font-semibold leading-6 text-[var(--vp-c-text-1)]">{{ name }}</span>
       <span
         v-if="single"
         class="text-[14px] leading-6 text-[var(--vp-c-text-3)] transition-[color,translate] duration-200 group-hover/card:translate-x-0.5 group-hover/card:text-[var(--vp-c-brand-1)] motion-reduce:transition-none motion-reduce:group-hover/card:translate-x-0"
@@ -58,11 +64,11 @@ const iconExternal =
       >
     </span>
 
-    <span v-if="project.description" class="text-[13px] leading-[1.65] text-[var(--vp-c-text-2)]">
-      {{ project.description }}
+    <span v-if="description" class="text-[13px] leading-[1.65] text-[var(--vp-c-text-2)]">
+      {{ description }}
     </span>
 
-    <span v-if="single || project.tags?.length" class="mt-auto flex flex-wrap items-center gap-1.5 pt-1">
+    <span v-if="single || tags.length" class="mt-auto flex flex-wrap items-center gap-1.5 pt-1">
       <span
         v-if="single"
         class="rounded-full px-2 py-0.5 text-[11px] font-medium leading-[1.65]"
@@ -72,9 +78,9 @@ const iconExternal =
             : 'bg-[var(--vp-c-brand-soft)] text-[var(--vp-c-brand-1)]'
         "
       >
-        {{ primary.external ? '外部站点' : '站内文档' }}
+        {{ primary.external ? ui[lang].externalBadge : ui[lang].docsBadge }}
       </span>
-      <span v-for="tag in project.tags" :key="tag" class="text-[11px] text-[var(--vp-c-text-3)]">{{ tag }}</span>
+      <span v-for="tag in tags" :key="tag" class="text-[11px] text-[var(--vp-c-text-3)]">{{ tag }}</span>
     </span>
 
     <span v-if="!single" class="mt-auto flex flex-wrap gap-2 pt-1">

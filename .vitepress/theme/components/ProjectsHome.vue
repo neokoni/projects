@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { pick, useLang } from '../i18n'
 import ProjectCard from './ProjectCard.vue'
 
 interface CardLink {
@@ -24,9 +25,18 @@ const props = defineProps<{
   }
 }>()
 
+const lang = useLang()
+
+const headline = computed(() => pick(props.data.site, 'headline', lang.value) ?? props.data.site.title)
+const description = computed(() => pick(props.data.site, 'description', lang.value))
+
 const groups = computed(() =>
   props.data.groups
-    .map((group) => ({ ...group, items: props.data.projects.filter((project) => project.group === group.id) }))
+    .map((group) => ({
+      id: group.id,
+      title: pick(group, 'title', lang.value) ?? group.id,
+      items: props.data.projects.filter((project) => project.group === group.id)
+    }))
     .filter((group) => group.items.length > 0)
 )
 </script>
@@ -35,10 +45,10 @@ const groups = computed(() =>
   <div class="mx-auto max-w-[1152px] px-5 pb-[72px] pt-2 sm:px-6 sm:pb-24">
     <header class="pb-2 pt-9 sm:pt-14">
       <h1 class="text-[30px] font-bold leading-[1.15] tracking-[-0.02em] sm:text-[40px]">
-        {{ data.site.headline ?? data.site.title }}
+        {{ headline }}
       </h1>
       <p class="mt-3.5 max-w-[62ch] text-[15px] leading-[1.7] text-[var(--vp-c-text-2)] sm:text-base">
-        {{ data.site.description }}
+        {{ description }}
       </p>
     </header>
 

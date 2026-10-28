@@ -21,6 +21,7 @@ ci: deploy the whole dist directory with scp-action
 - `projects.json` 是项目数据的唯一来源：分组、条目、链接类型都从这里来，不得在组件或 Markdown 里硬编码项目列表。
 - 新增条目只加数据，不改渲染代码。每个项目用 `links` 数组描述入口，每条只能有 `slug`（站内文档，须与 `content/<slug>/` 一致）或 `href`（完整 `http(s)` 地址）之一。
 - 一条 `links` 时整卡可点，多条时卡内渲染按钮——这个分支由组件按数组长度决定，不要为单个项目写特例。
+- 每条文案都要有英文副本：中文写在 `headline` / `title` / `name` / `description` / `tags` / `text` 上，英文写在同级的 `_en` 字段里（`headline_en`、`title_en`、`name_en`、`description_en`、`tags_en`、`text_en`），缺失会中断构建。
 - 校验在配置加载时执行，`dev` 与 `build` 都会中断并列出全部问题。
 
 ## 3 路径不变量
@@ -28,6 +29,7 @@ ci: deploy the whole dist directory with scp-action
 - 站内文档 URL 固定为 `/<slug>/docs/zh-cn/`，由 `content/<slug>/docs/zh-cn/` 的目录结构直接决定（`srcDir: 'content'`），不引入 `rewrites` 或跳转桩。
 - `content/` 之外的 Markdown（`README.md`、`AGENTS.md`）不参与构建，不要把页面写到根目录。
 - 侧边栏由目录扫描生成，不要手写 `sidebar` 数组；要让菜单文案变化，改对应文件的一级标题。
+- 只有首页有英文版：中文留在 `/`，英文在 `/en/`（`content/en/index.md`）。文档区仍只有中文，英文页的站内文档链接指向 `/<slug>/docs/zh-cn/`。
 
 ## 4 部署
 

@@ -2,7 +2,9 @@
   "site": {
     "title": "Neokoni's Projects",
     "headline": "Neokoni的摸鱼项目?",
+    "headline_en": "Neokoni's side projects?",
     "description": "也许是Neokoni的摸鱼项目, 包含自托管服务、开源项目、个人网站等奇奇怪怪的东西。",
+    "description_en": "Probably Neokoni's side projects: self-hosted services, open-source code, personal sites and other odds and ends.",
     "url": "https://projects.neokoni.ink",
     "icon": "https://res.neokoni.ink/neokoni/svg/favicon.svg",
     "author": "Neokoni",
@@ -11,70 +13,95 @@
   "groups": [
     {
       "id": "projects",
-      "title": "项目"
+      "title": "项目",
+      "title_en": "Projects"
     },
     {
       "id": "services",
-      "title": "服务与 API"
+      "title": "服务与 API",
+      "title_en": "Services & APIs"
     },
     {
       "id": "other",
-      "title": "其他"
+      "title": "其他",
+      "title_en": "Other"
     }
   ],
   "projects": [
     {
       "name": "OTA 日志站",
+      "name_en": "OTA Logs",
       "description": "系统更新包的发布记录与分发页面。",
+      "description_en": "Release history and download pages for system update packages.",
       "group": "services",
       "links": [
         {
           "text": "访问",
+          "text_en": "Visit",
           "href": "https://ota.neokoni.ink/"
         }
       ],
       "tags": [
         "发布"
+      ],
+      "tags_en": [
+        "Releases"
       ]
     },
     {
       "name": "LightTickets",
+      "name_en": "LightTickets",
       "description": "轻量工单系统，前后端分离，自带 API。",
+      "description_en": "A lightweight ticketing system with a separate frontend and backend and its own API.",
       "group": "projects",
       "links": [
         {
           "text": "文档",
+          "text_en": "Docs",
           "slug": "lighttickets"
         },
         {
           "text": "源码",
+          "text_en": "Source",
           "href": "https://github.com/neokoni/LightTickets"
         }
       ],
       "tags": [
         "TypeScript",
         "自托管"
+      ],
+      "tags_en": [
+        "TypeScript",
+        "Self-hosted"
       ]
     },
     {
       "name": "Craft233",
+      "name_en": "Craft233",
       "description": "Minecraft 服务器，官网、文档与组织入口。",
+      "description_en": "A Minecraft server, with its website, docs and organisation links.",
       "group": "other",
       "links": [
         {
           "text": "官网",
+          "text_en": "Website",
           "href": "https://www.craft233.cn/"
         },
         {
           "text": "文档",
+          "text_en": "Docs",
           "href": "https://docs.craft233.cn/"
         },
         {
           "text": "组织",
+          "text_en": "Org",
           "href": "https://github.com/Craft233MC"
         }
       ],
       "tags": [
+        "Minecraft"
+      ],
+      "tags_en": [
         "Minecraft"
       ]
     }
