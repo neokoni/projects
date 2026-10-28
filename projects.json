@@ -2,11 +2,11 @@
   "site": {
     "title": "Neokoni's Projects",
     "headline": "Neokoni的摸鱼项目?",
-    "description": "我维护的服务、项目与文档。站内文档直接挂在这个域名下的 /<项目>/docs/zh-cn/，其余入口跳转到各自的外部站点。",
+    "description": "也许是Neokoni的摸鱼项目, 包含自托管服务、开源项目、个人网站等奇奇怪怪的东西。",
     "url": "https://projects.neokoni.ink",
     "icon": "https://res.neokoni.ink/neokoni/svg/favicon.svg",
     "author": "Neokoni",
-    "repo": "https://github.com/neokoni/projects.neokoni.ink"
+    "repo": "https://github.com/neokoni/project-hub"
   },
   "groups": [
     {
