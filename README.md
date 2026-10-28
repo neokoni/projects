@@ -19,7 +19,12 @@ content/
 └── handbook/docs/zh-cn/          站内文档区 → /handbook/docs/zh-cn/
 .vitepress/
 ├── config.mts                    数据校验 + 侧边栏生成 + VitePress 配置
-└── theme/                        卡片与首页组件（样式用 Tailwind 写在模板里）
+└── theme/
+    ├── index.ts                  注册组件与样式
+    ├── Layout.vue                默认布局 + 自定义 404 插槽 + 折叠动画挂载
+    ├── sidebar-motion.ts         侧边栏分组的展开/收起动画
+    ├── components/               卡片、首页、文档首页、404（样式用 Tailwind 写在模板里）
+    └── styles/                   tailwind.css + overrides.css
 projects.json                     项目数据的唯一来源
 ```
 
@@ -38,7 +43,9 @@ projects.json                     项目数据的唯一来源
 
 ## 样式
 
-组件样式是模板里的 Tailwind 工具类，`.vitepress/theme/styles/` 下只有两个文件：`tailwind.css` 引入 Tailwind（不带 preflight，utilities 留在 `@layer` 之外，否则会被 VitePress 未分层的样式整体压过），`overrides.css` 只覆盖 VitePress 自身（导航栏通栏那段）。
+组件样式是模板里的 Tailwind 工具类，`.vitepress/theme/styles/` 下只有两个文件：`tailwind.css` 引入 Tailwind（不带 preflight，utilities 留在 `@layer` 之外，否则会被 VitePress 未分层的样式整体压过），`overrides.css` 只覆盖 VitePress 自身（导航栏通栏、侧边栏与目录的配色和过渡）。
+
+404 页走 `Layout.vue` 里的 `#not-found` 插槽渲染 `components/NotFoundPage.vue`，排版和配色与首页一致；请求的路径由浏览器侧补上（静态页里拿不到）。
 
 ## 部署
 
