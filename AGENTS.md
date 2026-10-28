@@ -28,7 +28,7 @@ ci: deploy the whole dist directory with scp-action
 
 - 站内文档 URL 固定为 `/<slug>/docs/zh-cn/`，由 `content/<slug>/docs/zh-cn/` 的目录结构直接决定（`srcDir: 'content'`），不引入 `rewrites` 或跳转桩。
 - `content/` 之外的 Markdown（`README.md`、`AGENTS.md`）不参与构建，不要把页面写到根目录。
-- 侧边栏由目录扫描生成，不要手写 `sidebar` 数组；要让菜单文案变化，改对应文件的一级标题。
+- 侧边栏由目录扫描生成，不要手写 `sidebar` 数组；要让菜单文案变化，改对应文件的一级标题。文档区自己的 `index.md` 固定以「概览」出现在最前面。
 - 只有首页有英文版：中文留在 `/`，英文在 `/en/`（`content/en/index.md`）。文档区仍只有中文，英文页的站内文档链接指向 `/<slug>/docs/zh-cn/`。
 
 ## 4 部署

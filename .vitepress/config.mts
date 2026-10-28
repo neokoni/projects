@@ -100,6 +100,12 @@ function buildSidebar(slug) {
     pageItem(slug, dir, rel)
   )
 
+  // The docs area's own index.md is otherwise unreachable from the sidebar: it
+  // is not an item and there is no group around it. List it first instead.
+  const overview = existsSync(join(dir, 'index.md'))
+    ? [{ text: '概览', link: pageLink(slug, 'index.md') }]
+    : []
+
   const groups = readdirSync(dir, { withFileTypes: true })
     .filter((entry) => entry.isDirectory() && !entry.name.startsWith('.'))
     .map((entry) => {
@@ -121,7 +127,10 @@ function buildSidebar(slug) {
     .sort((a, b) => a.order - b.order || a.group.text.localeCompare(b.group.text))
     .map((entry) => entry.group)
 
-  return [...(loose.length ? [{ text: '概览', items: loose }] : []), ...groups]
+  // Loose pages keep their own group; rename it so the two never share a title.
+  const looseGroup = loose.length ? [{ text: overview.length ? '其他页面' : '概览', items: loose }] : []
+
+  return [...overview, ...looseGroup, ...groups]
 }
 
 // Sidebar keys come from the content tree, not from projects.json: a docs area
