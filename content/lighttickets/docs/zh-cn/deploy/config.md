@@ -88,7 +88,7 @@ database:
 | `database.database` | string | MySQL 必填 | 数据库名 |
 | `database.args` | string | 可选 | 追加到 MySQL 连接串 query 部分，例如 `sslaccept=strict` |
 
-SQLite 只需要 `provider: sqlite`，数据库文件固定为 `data/data.db`，没有可配置的路径键。切换 provider 相当于换一套数据，务必先备份 `data/`。
+SQLite 只需要 `provider: sqlite`，数据库文件固定为 `data/data.db`，没有可配置的路径键。切换 provider 相当于换一套数据，建议先备份 `data/`。
 
 ### security
 

@@ -54,7 +54,7 @@ node dist/index.js
 ```
 
 ::: warning
-`LT_SERVER_DATA_DIR` 是相对 `process.cwd()` 解析的。用 systemd 启动时务必写绝对路径，否则数据会落到服务的工作目录里，升级后容易"丢库"。
+`LT_SERVER_DATA_DIR` 是相对 `process.cwd()` 解析的。用 systemd 启动时建议写绝对路径，否则数据会落到服务的工作目录里，升级后容易"丢库"。
 :::
 
 ### config.yml
@@ -199,7 +199,7 @@ server {
 }
 ```
 
-若 nginx 与前端不在同一台机器，或你直接反代到 23320，需要把站点 origin 加进 `server.corsOrigins`，并把 nginx 出口 IP 写进 `server.trustedProxyIps`，详见 [配置参考](./config.md)。
+若 nginx 与前端不在同一台机器，或直接把请求反代到 23320，需要把站点 origin 加进 `server.corsOrigins`，并把 nginx 出口 IP 写进 `server.trustedProxyIps`，详见 [配置参考](./config.md)。
 
 ## 开发模式
 

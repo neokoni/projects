@@ -112,7 +112,7 @@ sudo systemctl restart lighttickets-web
 ### 回滚边界
 
 - 迁移只有向前方向，没有 down migration，回退代码不会回退 schema；
-- 可在相邻版本间回退代码，已前进的 schema 只能靠备份恢复（`data/` 或 MySQL dump）；
+- 可在相邻版本间回退代码，已经前进过的 schema 变化需要从备份恢复（`data/` 或 MySQL dump）；
 - 不要回退到早于玩家会话强化的旧版本，它们与当前绑定数据不兼容；
 - 回滚后插件也要退回同版本，避免新插件对着旧后端。
 

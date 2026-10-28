@@ -16,7 +16,7 @@ order: 20
 | `hook:execute` | 完成钩子投递被派发 | `server:<serverId>` | 见 [完成钩子投递](./hooks.md) |
 
 议题相关事件目前只有上面这两个：既没有议题创建事件，也没有删除、标签、受理人等事件的推送。
-需要这些信息时请用 HTTP 接口查询。
+需要这些信息时走 HTTP 接口查询。
 
 ## ticket:status_changed
 

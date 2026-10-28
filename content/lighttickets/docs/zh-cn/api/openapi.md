@@ -38,7 +38,7 @@ pnpm gen:openapi   # 等价于 tsx src/openapi.ts
 
 脚本先构建完整文档对象，再跑一遍校验，全部通过后才写入 `backend/openapi.json`，并打印路径数量。任何一项校验失败都会抛出异常、以非零状态退出，且不覆盖已有产物——所以产物永远对应一次通过的校验。
 
-`gen:openapi` 是手动命令，不在 `build` 里：`build` 只做 `tsc` 与运行时资源拷贝。改动路由或 schema 后需要自己重跑，并提交更新后的 `openapi.json`。
+`gen:openapi` 是手动命令，不在 `build` 里：`build` 只做 `tsc` 与运行时资源拷贝。改动路由或 schema 后记得重跑一次，并把更新后的 `openapi.json` 一起提交。
 
 ## 生成时的校验
 

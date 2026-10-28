@@ -82,7 +82,7 @@ Socket.IO 服务的 `cors.origin` 是回调函数：没有 `Origin` 头（例如
 带 `Origin` 的请求必须在 `config.yml` 的 `server.corsOrigins` 列表中，否则回调
 `Error('Not allowed by CORS')`。该配置默认值为 `['http://localhost:23310']`。
 
-浏览器端接入时务必把站点 origin 加进 `server.corsOrigins`；Minecraft 插件使用原生 WebSocket，
+浏览器端接入时记得把站点 origin 加进 `server.corsOrigins`；Minecraft 插件使用原生 WebSocket，
 通常不受浏览器同源限制，但部署了反向代理时仍建议保持配置一致。
 
 ## 客户端最小示例

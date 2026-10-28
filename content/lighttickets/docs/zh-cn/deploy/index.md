@@ -25,7 +25,7 @@ LightTickets 由三部分组成，其中后端是唯一持有数据的服务。
 | 23320 | 后端 API | `LT_SERVER_PORT` | 通常否，由前端或反代转发 |
 | 3306 | MySQL | `database.port` | 否 |
 
-后端端口不对外暴露的前提是前端代理链路正常；若你让浏览器直连后端，就必须配置 `server.corsOrigins`。
+后端端口不对外暴露的前提是前端代理链路正常；若让浏览器直连后端，则需要配置 `server.corsOrigins`。
 
 ## 两种部署方式
 
@@ -33,7 +33,7 @@ LightTickets 由三部分组成，其中后端是唯一持有数据的服务。
 | --- | --- | --- |
 | 适用场景 | 推荐，生产与快速试用 | 无 Docker 环境、需要自定义进程管理 |
 | 依赖 | Docker、Docker Compose | Node 24、npm、openssl |
-| Node 版本管理 | 由镜像内固定 | 由你负责 |
+| Node 版本管理 | 由镜像内固定 | 需自行维护 |
 | 端口与变量 | `docker-compose.yml` 是唯一来源 | 由 systemd 或 shell 环境提供 |
 | 升级方式 | `docker compose up --build -d` | 重新 `npm install && npm run build` |
 | 数据位置 | 宿主机 `./data` 挂载到 `/app/data` | `LT_SERVER_DATA_DIR` 指定 |

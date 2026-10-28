@@ -78,7 +78,7 @@ options:
 ```
 
 ::: warning
-`docs/template.md` 把带 `required` 的选项描述为「仅影响前端显示」，但提交时 `validateAndNormalizeFormData` 会强制校验：漏选会抛出 `<标签> 缺少必选项`。请按真实约束编写。
+`docs/template.md` 把带 `required` 的选项描述为「仅影响前端显示」，但提交时 `validateAndNormalizeFormData` 会强制校验：漏选会抛出 `<标签> 缺少必选项`。编写时按真实约束处理。
 :::
 
 ## dropdown
