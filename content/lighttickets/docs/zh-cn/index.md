@@ -56,6 +56,7 @@ Socket.IO 长连接到 `/mc` 命名空间，用来接收状态变更、新评论
 | --- | --- |
 | [部署指南](./deploy/index.md) | 架构与端口、Docker Compose、手动部署、Minecraft 插件部署、配置参考、运维与升级 |
 | [使用指南](./guide/index.md) | 角色与权限、账户与登录、议题、评论与附件、游戏内使用、管理后台 |
+| [多语言](./i18n/index.md) | 语言如何生效、新增语言、覆盖内置文案 |
 | [议题模板](./template/index.md) | 模板结构、字段类型、完成钩子、完整示例 |
 | [外部 API](./api/index.md) | Web 端 REST API：约定、认证与账户、议题、模板、管理后台、OpenAPI |
 | [Server API](./server-api/index.md) | 插件侧的 `/api/mc/*` 接口：鉴权模型、注册与会话、议题与评论、其他接口 |
