@@ -41,6 +41,9 @@ jobs:
       - name: build website file
         run: pnpm build
 
+      - name: add favicon to dist
+        run: curl https://res.neokoni.ink/neokoni/ico/favicon.ico -o dist/favicon.ico
+
       # Single site: dist/ is the whole site, so the target can be replaced.
       - name: SSH Server Deploy
         uses: appleboy/scp-action@v0.1.7
