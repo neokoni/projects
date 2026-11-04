@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
 import { computed, onMounted, ref } from 'vue'
-import { ui, useLang } from '../i18n'
-
-const lang = useLang()
-const copy = computed(() => ui[lang.value])
-const home = computed(() => withBase(lang.value === 'en-us' ? '/en-us/' : '/'))
+import { ui, useLang, type Lang } from '../i18n'
 
 // The server answers unknown paths with this file, so the requested path is
 // only known in the browser.
@@ -15,6 +11,13 @@ onMounted(() => {
   const path = decodeURI(location.pathname)
   if (path !== '/404' && path !== '/404.html') requested.value = path
 })
+
+const lang = useLang()
+// A missing /en-us/... URL should answer in English even though the 404 file
+// itself is rendered with the root locale.
+const pageLang = computed<Lang>(() => (requested.value.startsWith('/en-us/') ? 'en-us' : lang.value))
+const copy = computed(() => ui[pageLang.value])
+const home = computed(() => withBase(pageLang.value === 'en-us' ? '/en-us/' : '/'))
 </script>
 
 <template>

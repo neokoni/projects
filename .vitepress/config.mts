@@ -142,15 +142,28 @@ for (const entry of readdirSync(contentDir, { withFileTypes: true })) {
   if (items?.length) sidebar[`/${entry.name}/docs/${LANG}/`] = items
 }
 
+/* ---------- pages that exist in both locales ---------- */
+
+// The language switcher keeps the current path across locales, so it is only
+// offered on pages whose counterpart really exists. The docs area is Chinese
+// only, so those pages hide it.
+function readLocalizedPages(): Set<string> {
+  const pages = new Set<string>()
+  for (const rel of walk(contentDir)) {
+    const counterpart = rel.startsWith('en-us/') ? rel.slice('en-us/'.length) : `en-us/${rel}`
+    if (existsSync(join(contentDir, counterpart))) pages.add(rel)
+  }
+  return pages
+}
+
+const localizedPages = readLocalizedPages()
+
 /* ---------- site config ---------- */
 
 const year = new Date().getFullYear()
 const copyright = `© ${year} ${data.site.author ?? ''}`.trim()
 
-// Only the two homepages are translated, so a language link has to land on the
-// other locale's home: the mirrored path (`/en-us/lighttickets/docs/zh-cn/`) would
-// not exist. `i18nRouting` is read at runtime but missing from the theme types.
-const themeConfig: DefaultTheme.Config & { i18nRouting?: boolean } = {
+const themeConfig: DefaultTheme.Config & { localizedPages?: string[] } = {
   siteTitle: data.site.title,
   nav: [{ text: '全部项目', link: '/' }],
   socialLinks: data.site.repo ? [{ icon: 'github', link: data.site.repo }] : [],
@@ -167,7 +180,8 @@ const themeConfig: DefaultTheme.Config & { i18nRouting?: boolean } = {
   sidebarMenuLabel: '目录',
   returnToTopLabel: '回到顶部',
   langMenuLabel: '切换语言',
-  i18nRouting: false
+  // Read by Layout.vue: the language menu only shows on pages that exist in both locales.
+  localizedPages: [...localizedPages]
 }
 
 export default defineConfig({
@@ -184,26 +198,34 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
 
+  // Every page carries its own canonical and og:url: cleanUrls drops the .html
+  // suffix, and index pages resolve to their directory URL.
+  transformHead({ page }) {
+    const path = page.replace(/\.md$/, '').replace(/(^|\/)index$/, '$1')
+    const url = path ? `${data.site.url}/${path}` : `${data.site.url}/`
+    return [
+      ['link', { rel: 'canonical', href: url }],
+      ['meta', { property: 'og:url', content: url }]
+    ]
+  },
+
   head: [
     ['link', { rel: 'icon', href: data.site.icon }],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:title', content: data.site.title }],
-    ['meta', { property: 'og:description', content: data.site.description }],
-    ['meta', { property: 'og:url', content: data.site.url }],
-    ['link', { rel: 'canonical', href: data.site.url }]
+    ['meta', { property: 'og:description', content: data.site.description }]
   ],
 
   locales: {
     root: { label: '简体中文', lang: 'zh-CN' },
-    en: {
+    'en-us': {
       label: 'English',
       lang: 'en-US',
       link: '/en-us/',
       description: data.site.description_en,
       head: [
         ['meta', { property: 'og:description', content: data.site.description_en }],
-        ['meta', { property: 'og:locale', content: 'en_US' }],
-        ['meta', { property: 'og:url', content: `${data.site.url}/en-us/` }]
+        ['meta', { property: 'og:locale', content: 'en_US' }]
       ],
       themeConfig: {
         nav: [{ text: 'All projects', link: '/en-us/' }],

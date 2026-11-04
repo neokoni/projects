@@ -1,14 +1,14 @@
 import { useData } from 'vitepress'
 import { computed, type ComputedRef } from 'vue'
 
-export type Lang = 'zh' | 'en-us'
+export type Lang = 'zh-cn' | 'en-us'
 
 // Docs areas only exist in Chinese; the English homepage links into them.
 export const DOCS_LANG = 'zh-cn'
 
 /** VitePress reports the locale as `zh-CN` / `en-US`. */
 export function langOf(vpLang: string): Lang {
-  return vpLang.toLowerCase().startsWith('en-us') ? 'en-us' : 'zh'
+  return vpLang.toLowerCase().startsWith('en-us') ? 'en-us' : 'zh-cn'
 }
 
 export function useLang(): ComputedRef<Lang> {
@@ -25,7 +25,7 @@ export function pick<T = string>(record: Record<string, any> | undefined, key: s
 
 /** Copy that belongs to the components rather than to projects.json. */
 export const ui = {
-  zh: {
+  'zh-cn': {
     externalBadge: '外部站点',
     docsBadge: '站内文档',
     notFoundTitle: '页面不存在',
@@ -33,7 +33,7 @@ export const ui = {
     notFoundPath: '请求的路径',
     notFoundAction: '回到首页'
   },
-  en: {
+  'en-us': {
     externalBadge: 'External site',
     docsBadge: 'Docs',
     notFoundTitle: 'Page not found',

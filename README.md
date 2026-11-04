@@ -63,9 +63,9 @@ projects.json                     项目数据的唯一来源
 
 ## 多语言
 
-- 路由由 VitePress 的 `locales` 配置：中文为 `root`，英文为 `en`，`content/en-us/` 对应 `/en-us/`。两份主页共用 `ProjectsHome` 组件，该组件通过 `useLang()` 获取当前语言，再按 `_en` 后缀选择文案。
-- 语言切换入口为主题内置的翻译下拉（导航栏右侧图标，移动端位于抽屉内）。配置中 `i18nRouting: false`：仅首页提供翻译，切换一律落到对方首页，不生成 `/<slug>/docs/zh-cn/` 的镜像路径。
-- 文档区仍仅有中文，英文主页卡片上的「Docs」指向 `/<slug>/docs/zh-cn/`。`sitemap` 将同时写出两种语言的 `hreflang`。
+- 路由由 VitePress 的 `locales` 配置：中文为 `root`（语言标识 `zh-cn`），英文为 `en-us`，`content/index.md` 与 `content/en-us/index.md` 分别对应 `/`、`/en-us/`。两份主页共用 `ProjectsHome` 组件，该组件通过 `useLang()` 获取当前语言，再按 `_en` 后缀选择文案。
+- 语言切换入口为主题内置的翻译下拉（导航栏右侧图标，移动端位于抽屉内），切换时保留当前路径、替换 locale 前缀，`/` 与 `/en-us/` 互跳。只有存在对方语言版本的页面才显示该入口；文档区只有中文，因此文档页不显示。
+- 文档区仍仅有中文，英文主页卡片上的「Docs」指向 `/<slug>/docs/zh-cn/`。
 
 ## 侧边栏规则
 
