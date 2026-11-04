@@ -148,7 +148,7 @@ const year = new Date().getFullYear()
 const copyright = `© ${year} ${data.site.author ?? ''}`.trim()
 
 // Only the two homepages are translated, so a language link has to land on the
-// other locale's home: the mirrored path (`/en/lighttickets/docs/zh-cn/`) would
+// other locale's home: the mirrored path (`/en-us/lighttickets/docs/zh-cn/`) would
 // not exist. `i18nRouting` is read at runtime but missing from the theme types.
 const themeConfig: DefaultTheme.Config & { i18nRouting?: boolean } = {
   siteTitle: data.site.title,
@@ -197,16 +197,16 @@ export default defineConfig({
     root: { label: '简体中文', lang: 'zh-CN' },
     en: {
       label: 'English',
-      lang: 'en',
-      link: '/en/',
+      lang: 'en-US',
+      link: '/en-us/',
       description: data.site.description_en,
       head: [
         ['meta', { property: 'og:description', content: data.site.description_en }],
         ['meta', { property: 'og:locale', content: 'en_US' }],
-        ['meta', { property: 'og:url', content: `${data.site.url}/en/` }]
+        ['meta', { property: 'og:url', content: `${data.site.url}/en-us/` }]
       ],
       themeConfig: {
-        nav: [{ text: 'All projects', link: '/en/' }],
+        nav: [{ text: 'All projects', link: '/en-us/' }],
         footer: { message: 'An index of the projects, services and docs I maintain.', copyright },
         darkModeSwitchLabel: 'Appearance',
         sidebarMenuLabel: 'Contents',

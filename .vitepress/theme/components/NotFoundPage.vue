@@ -5,7 +5,7 @@ import { ui, useLang } from '../i18n'
 
 const lang = useLang()
 const copy = computed(() => ui[lang.value])
-const home = computed(() => withBase(lang.value === 'en' ? '/en/' : '/'))
+const home = computed(() => withBase(lang.value === 'en-us' ? '/en-us/' : '/'))
 
 // The server answers unknown paths with this file, so the requested path is
 // only known in the browser.

@@ -4,9 +4,9 @@ order: 1
 
 # 目录结构
 
-## 一条规则决定 URL
+## URL 的生成规则
 
-VitePress 的 `srcDir` 指向 `content/`，页面 URL 就是它在 `content/` 下的相对路径。所以要拿到 `/<slug>/docs/zh-cn/xxx` 这个 URL，目录就得长成这样：
+VitePress 的 `srcDir` 指向 `content/`，页面 URL 为页面文件在 `content/` 下的相对路径。`/<slug>/docs/zh-cn/xxx` 形式的 URL 对应以下目录结构：
 
 ```
 content/
@@ -17,16 +17,28 @@ content/
         └── structure.md → /handbook/docs/zh-cn/guide/structure
 ```
 
-`content/<slug>/docs/<lang>/` 里那段 `docs/zh-cn` 是 URL 的一部分，不是可选的风格选择。单个项目要加语言版本时，平行再加 `docs/en-us/`。
+`content/<slug>/docs/<lang>/` 中的 `docs/zh-cn` 属于 URL 的组成部分。单个项目增加语言版本时，并列添加 `docs/en-us/`。
 
-## 根目录下不放页面
+## 不参与构建的目录
 
-`README.md`、`AGENTS.md` 在 `content/` 之外，因此不会变成网页；`.vitepress/`、`node_modules/` 这些目录也不参与路由。这是故意分开的：给人和给机器读的文件不必上线。
+`README.md`、`AGENTS.md` 位于 `content/` 之外，不参与构建，不生成页面。`.vitepress/`、`node_modules/` 等目录同样不参与路由。
 
-## 加一个文档区
+## 新增文档区的步骤
 
-1. 建目录 `content/<slug>/docs/zh-cn/`，放一个 `index.md` 作为落地页；
-2. 在 `projects.json` 里加一条带 `slug` 链接的条目（`links: [{ "text": "在线阅读", "slug": "<slug>" }]`）；
-3. 侧边栏会自动出现，不需要改配置。
+1. 创建目录 `content/<slug>/docs/zh-cn/`，并在其中放置 `index.md` 作为落地页。
+2. 在 `projects.json` 中新增一条带 `slug` 链接的条目，`links` 如下：
 
-`dev` 与 `build` 加载配置时会校验 `slug` 与实际目录，对不上直接报错，不会带着 404 上线。
+    ```json
+    {
+      "links": [
+        {
+          "text": "在线阅读",
+          "slug": "<slug>"
+        }
+      ]
+    }
+    ```
+
+3. 侧边栏由目录扫描生成，新增目录后即出现，无须修改配置。
+
+`dev` 与 `build` 在加载配置时校验 `slug` 与实际目录，两者不一致时产生错误并中断构建，站点不会在存在 404 链接的情况下上线。

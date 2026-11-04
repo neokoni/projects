@@ -104,20 +104,20 @@ completion_hooks:
       - "<color:#ffffff>议题 <color:#96bfff>#{ticket_id}</color> 已关闭，标题：{ticket_title}</color>"
 ```
 
-逐段说明：
+各段说明如下：
 
 | 片段 | 作用 |
 | --- | --- |
 | `name` / `description` / `title_prefix` | 模板名与用途，创建时标题自动带 `[示例]` |
-| `dropdown` + `id: priority` | 必填下拉，选项为数字字符串，便于 `if` 做数值比较 |
+| `dropdown` + `id: priority` | 必填下拉，选项为数字字符串，`if` 可对其做数值比较 |
 | `textarea` + `id: reproduction` | 必填多行文本 |
-| `input` 字段 | `expected_answer`、`workaround`，都是选填单行文本 |
-| `checkboxes` | 混合写法：首项 `required: true` 必须勾选，次项可选 |
-| `if: "{field.category}==bug"` | 模板里没有 `category` 字段，取值为空字符串，所以两条中只有「非 bug」命中 |
+| `input` 字段 | `expected_answer`、`workaround`，均为选填单行文本 |
+| `checkboxes` | 混合写法：首项 `required: true` 须勾选，次项可选 |
+| `if: "{field.category}==bug"` | 模板中无 `category` 字段，取值为空字符串，两条中仅「非 bug」命中 |
 | `{field.priority}<5` / `<=2` / `>3` / `>=4` | 同一数字字段四种比较，可同时命中多条钩子 |
-| `{ticket_id}>0` | 恒真条件，演示总会执行的消息钩子 |
+| `{ticket_id}>0` | 恒真条件，该消息钩子在事件触发时总会执行 |
 
-## 其余内置模板要点
+## 其余内置模板
 
 | 文件 | 字段构成 | 钩子配置 |
 | --- | --- | --- |
@@ -126,7 +126,7 @@ completion_hooks:
 | `report.yml` | 被举报玩家名（必填）、举报详情（必填） | `completion_hooks: []` |
 | `suggestion.yml` | 建议内容（必填） | `closed` 时发「已被采纳」消息 |
 
-对应片段：
+对应片段如下：
 
 ```yaml
 # bug_report.yml —— 只有表单，没有钩子
@@ -157,9 +157,9 @@ completion_hooks:
       - "<color:#ffffff>你的建议 </color><color:#96bfff>#{ticket_id}</color><color:#ffffff> 已被采纳</color>"
 ```
 
-## 常见写法集合
+## 常用写法
 
-必填字段与必选选项，`validations.required` 约束整体，选项上的 `required` 约束单项：
+必填字段与必选选项：`validations.required` 约束整体，选项上的 `required` 约束单项。
 
 ```yaml
 - type: checkboxes
@@ -173,7 +173,7 @@ completion_hooks:
         required: true
 ```
 
-按玩家组过滤玩家，并允许提交组外的有效玩家名：
+按玩家组过滤玩家，并允许提交组外的有效玩家名。
 
 ```yaml
 - type: player_select
@@ -186,7 +186,7 @@ completion_hooks:
     input_any: true
 ```
 
-带条件的钩子，以及只在拒绝时触发的钩子：
+带条件的钩子，以及仅在拒绝时触发的钩子。
 
 ```yaml
 - event: closed
@@ -200,4 +200,4 @@ completion_hooks:
     - "<color:#ff8181>你的申请 #{ticket_id} 已被拒绝</color>"
 ```
 
-`if` 只能写在钩子项上，字段不支持条件；不写 `if` 的钩子在事件触发时总会执行。完整键表见 [./fields.md](./fields.md) 与 [./hooks.md](./hooks.md)。
+`if` 仅可写在钩子项上，字段不支持条件。不写 `if` 的钩子在事件触发时总会执行。完整键表见 [./fields.md](./fields.md) 与 [./hooks.md](./hooks.md)。

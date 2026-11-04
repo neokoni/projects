@@ -13,17 +13,17 @@ order: 50
 | Web 认证 | `Authorization: Bearer <accessToken>` |
 | Refresh Token | 后端通过 `HttpOnly` Cookie `lt_refresh_token` 下发 |
 
-响应体中的 `refreshToken` 仅是灰度兼容字段，浏览器端不得写入 `localStorage`；正常刷新流程完全依赖 Cookie。
+API 响应体中的 `refreshToken` 为灰度兼容字段，浏览器端不得将其写入 `localStorage`。正常刷新流程完全依赖 Cookie。
 
-## 响应 envelope
+## 响应 envelope 结构
 
-成功响应统一包一层 `data`：
+成功响应的结果置于 `data` 字段内：
 
-```json
+```jsonc
 {
-  "success": true,
+  "success": true, // 成功响应的固定取值
   "data": {
-    "tickets": [],
+    "tickets": [], // 业务结果，字段随端点而异
     "total": 0,
     "page": 1,
     "pageSize": 20
@@ -31,50 +31,59 @@ order: 50
 }
 ```
 
-失败响应统一包含错误码与消息：
+失败响应包含错误码与错误消息：
 
-```json
+```jsonc
 {
-  "success": false,
-  "statusCode": 400,
-  "message": "参数校验失败"
+  "success": false,            // 失败响应的固定取值
+  "statusCode": 400,           // 与 HTTP 状态码一致
+  "message": "参数校验失败"     // 面向开发者的错误消息
 }
 ```
 
-两个例外与一个空响应：
+各端点页面中的响应示例只展示 envelope 内 `data` 的内容；实际响应在外层再包一层 `{ "success": true, "data": … }`，返回数组的端点则为其包装的数组。
 
-- `204 No Content` 无响应体，例如 `DELETE /api/tickets/:ticketId/comments/:commentId`、`POST /api/auth/logout`。
-- `GET /api/health` 直接返回 `{ "status": "ok" }`，不包 envelope。
-- `GET /api/docs/openapi.json` 直接返回规范 JSON，不包 envelope，详见 [OpenAPI 规范](./openapi.md)。
+以下三类响应不套用 envelope：
 
-## 认证矩阵
+- `204 No Content` 的响应体为空，如 `DELETE /api/tickets/:ticketId/comments/:commentId` 与 `POST /api/auth/logout`。
+- `GET /api/health` 不套用 envelope，响应体为：
 
-接口按认证强度分为五档，下表给出每档的判定方式与代表端点。
+    ```jsonc
+    {
+      "status": "ok" // 服务可用时的固定取值
+    }
+    ```
+
+- `GET /api/docs/openapi.json` 直接返回规范 JSON，不套用 envelope，详见 [OpenAPI 规范](./openapi.md)。
+
+## 认证档位
+
+接口按认证强度分为五档。
 
 | 档位 | 请求头 | 行为 | 代表端点 |
 | --- | --- | --- | --- |
 | public | 无 | 任何人可调用 | `GET /api/health`、`GET /api/setup/site-config`、`GET /api/i18n/languages`、`GET /api/branding/:slot` |
 | bearer | `Authorization: Bearer <accessToken>` 必填 | 缺失或失效返回 `401` | `POST /api/tickets`、`PATCH /api/users/me/username`、`GET /api/tickets/:id/attachments` |
-| 可选 bearer（条件鉴权） | 可选 | 未登录按匿名访客处理；站点开启「要求登录」后必须有有效 token | `GET /api/tickets`、`GET /api/tickets/:id`、`GET /api/labels`、附件读取 |
+| 可选 bearer（条件鉴权） | 可选 | 未登录按匿名访客处理；站点开启「要求登录」后须有有效 token | `GET /api/tickets`、`GET /api/tickets/:id`、`GET /api/labels`、附件读取 |
 | staff | bearer + 角色 `staff` 或 `admin` | 角色不足返回 `403` | `PUT /api/tickets/:id/assignees`、`POST /api/tickets/:id/labels`、完成钩子端点 |
 | admin | bearer + 角色 `admin` | 角色不足返回 `403` | `/api/admin/*`、`PATCH /api/setup/settings`、`POST /api/labels`、`PUT /api/branding/:slot` |
 
-`/api/templates` 是特例：它接受浏览器 JWT，也接受 `X-Server-Key` 服务器 Key；两者都没有时返回 `401`。
+`/api/templates` 在认证方式上为例外：该端点接受浏览器 JWT，也接受 `X-Server-Key` 服务器 Key；两者均缺失时返回 `401`。
 
-`Bearer` token 失效的判定不只看签名，后端还会比对数据库中的用户状态：用户被删除、`tokenEpoch` 已变更（例如改密）时，旧 token 立即返回 `401`。
+后端判定 `Bearer` token 是否失效时，除签名外还比对数据库中的用户状态：用户被删除或 `tokenEpoch` 已变更（如修改密码）时，旧 token 立即返回 `401`。
 
-## 「要求登录」对读接口的影响
+## 「要求登录」设置对读接口的影响
 
-站点设置中的 `requireLogin` 由 `conditionalAuthMiddleware` 读取，影响所有「可选 bearer」的读接口：
+站点设置中的 `requireLogin` 由 `conditionalAuthMiddleware` 读取，作用于全部「可选 bearer」读接口：
 
 | `requireLogin` | 未携带 token | 携带有效 token |
 | --- | --- | --- |
 | `false`（默认） | 按匿名访客返回公开数据 | 按该用户可见范围返回 |
 | `true` | `401` 未登录 | 按该用户可见范围返回 |
 
-匿名访客只能看到公开议题；普通用户额外可读自己创建的隐藏议题；`staff` / `admin` 可读全部。隐藏议题对无权用户统一返回 `404`，避免通过关联资源判断是否存在。
+匿名访客仅可读取公开议题；普通用户在此基础上还可读取本人创建的隐藏议题；`staff` 与 `admin` 可读取全部议题。隐藏议题对无权用户统一返回 `404`，以防止通过关联资源判断其是否存在。
 
-## 错误码
+## 错误码与触发条件
 
 | HTTP | 语义 | 典型触发 |
 | --- | --- | --- |
@@ -86,29 +95,29 @@ order: 50
 | `429` | 触发限流 | 全局或认证限流窗口内超限 |
 | `502` | 上游失败 | SMTP 连接验证失败、S3 连接测试失败 |
 
-错误响应体始终是标准错误 envelope，不会以 `200` 返回 `success: false`。
+错误响应体始终为标准错误 envelope；错误不以 `200` 状态码返回 `success: false`。
 
-## 分页与列表结构
+## 分页参数与列表结构
 
-分页参数由 `page` 与 `pageSize` 组成：
+分页参数为 `page` 与 `pageSize`：
 
-| 参数 | 类型 | 默认 | 范围 |
+| 参数 | 类型 | 默认值 | 范围 |
 | --- | --- | --- | --- |
 | `page` | integer | `1` | 正整数 |
 | `pageSize` | integer | `20` | 1-100 |
 
-分页型端点返回 `{ items, total, page, pageSize }` 形式的对象，其中 `items` 的具体名称为资源名：
+分页型端点返回 `{ items, total, page, pageSize }` 形式的对象，其中 `items` 的实际名称为资源名：
 
 | 端点 | `data` 结构 |
 | --- | --- |
 | `GET /api/tickets` | `{ tickets, total, page, pageSize }` |
 | `GET /api/users` | `{ users, total, page, pageSize }` |
 
-其余集合型端点直接返回数组，不做分页：`GET /api/tickets/:id/comments`、`GET /api/labels`、`GET /api/tickets/:ticketId/audit`、`GET /api/templates`、`GET /api/users/assignable`。
+不分页的集合型端点返回数组：`GET /api/tickets/:id/comments`、`GET /api/labels`、`GET /api/tickets/:ticketId/audit`、`GET /api/templates`、`GET /api/users/assignable`。
 
-## 限流
+## 限流策略
 
-限流策略保存在数据库 `AppConfig` 中，修改后立即生效，可在管理后台调整。
+限流策略保存在数据库 `AppConfig` 中，修改后立即生效，并可在管理后台调整。
 
 | 策略 | 默认值 | 统计维度 |
 | --- | --- | --- |
@@ -117,9 +126,9 @@ order: 50
 | 邮件冷却 | 60 秒 | 注册验证码按规范化邮箱、密码重置按用户账号 |
 | Minecraft 绑定 | 5 次失败 / 15 分钟锁定 | 按登录用户 |
 
-窗口内前 `maxRequests` 次放行，之后返回 `429`，窗口结束后重新计数。秒数最大 86400，额度最大 100000。登录、注册、刷新、登出、密码重置、`link-minecraft`、验证码与邮件相关端点都挂认证限流器。
+窗口内前 `maxRequests` 次请求放行，超出的请求返回 `429`，窗口结束后重新计数。窗口秒数上限为 86400，额度上限为 100000。认证限流器挂载于登录、注册、刷新、登出、密码重置、`link-minecraft`、验证码及邮件相关端点。
 
-## 路由前缀总表
+## 路由前缀
 
 | 前缀 | 说明 | 详见 |
 | --- | --- | --- |
@@ -144,12 +153,12 @@ order: 50
 | `/api/users` | 当前用户资料、通知偏好、外部身份绑定；管理员用户管理 | [认证与账户](./auth.md)、[管理后台 API](./admin.md) |
 | `/api/mc` | 插件专用接口，`X-Server-Key` 认证 | [Server API](../server-api/index.md) |
 
-## OpenAPI
+## OpenAPI 规范端点
 
-运行时规范端点：
+运行时端点：
 
 ```http
 GET /api/docs/openapi.json
 ```
 
-未生成时返回 `404` 标准错误响应。产物、生成命令与校验方式见 [OpenAPI 规范](./openapi.md)。
+规范未生成时，该端点返回 `404` 标准错误响应。产物、生成命令与校验方式见 [OpenAPI 规范](./openapi.md)。

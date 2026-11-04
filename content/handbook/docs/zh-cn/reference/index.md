@@ -4,4 +4,4 @@ order: 2
 
 # 参考
 
-配置项与数据字段的速查。改站点行为前先看这一页，大部分需求不需要动 `.vitepress/config.mts`。
+本页为配置项与数据字段的速查。站点级开关位于 `.vitepress/config.mts`，项目数据位于 `projects.json`；多数需求无需修改 `.vitepress/config.mts`，调整站点行为前先查阅本页。

@@ -11,11 +11,11 @@ order: 50
 | 平台基础 | `data/config.yml` | 监听端口、CORS 来源、可信代理、数据库连接、JWT 与加密密钥 | setup 向导写入，或手改后重启后端 |
 | 应用配置 | 数据库 | 站点设置、注册策略、限流、SMTP、存储、外部登录 Provider、Turnstile、附件配额 | 管理后台即时生效 |
 
-判断标准很简单：需要**在数据库连上之前**就知道的东西放在 `config.yml`，其余都在数据库里。
+在数据库连接建立之前即须确定的值存放于 `config.yml`，其余值存放于数据库。
 
 ## config.default.yml
 
-后端自带 `backend/src/config.default.yml` 作为参考模板（构建时随 `dist/` 发布）：
+后端提供 `backend/src/config.default.yml` 作为参考模板，构建时随 `dist/` 发布：
 
 ```yaml
 server:
@@ -49,21 +49,21 @@ security:
   externalEncryptionKey: ""
 ```
 
-## 逐键说明
+## 各键说明
 
 ### server
 
 | 键 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
-| `server.port` | number | `23320` | API 监听端口；`LT_SERVER_PORT` 会覆盖它 |
-| `server.corsOrigins` | string[] | `["http://localhost:23310"]` | 允许的浏览器来源，精确匹配 origin |
+| `server.port` | number | `23320` | API 监听端口；`LT_SERVER_PORT` 将其覆盖 |
+| `server.corsOrigins` | string[] | `["http://localhost:23310"]` | 允许的浏览器来源，按 origin 精确匹配 |
 | `server.trustedProxyIps` | string[] | 空（不信任） | 可信反向代理的精确 IP，决定是否采信 `X-Forwarded-For` |
 
-`corsOrigins` 和 `trustedProxyIps` 没有后台修改接口，只能通过 setup 向导或手改 `config.yml` 后重启后端生效。
+`corsOrigins` 与 `trustedProxyIps` 无后台修改接口，仅可通过 setup 向导或手改 `config.yml` 后重启后端生效。
 
 ### database
 
-`database` 是**扁平**结构，不是嵌套的 `mysql:` 块。上面模板里被注释掉的嵌套写法只是示意，实际键名如下：
+`database` 为扁平结构，并非嵌套的 `mysql:` 块。上述模板中被注释掉的嵌套写法仅为示意，实际键名如下：
 
 ```yaml
 database:
@@ -86,31 +86,31 @@ database:
 | `database.database` | string | MySQL 必填 | 数据库名 |
 | `database.args` | string | 可选 | 追加到 MySQL 连接串 query 部分，例如 `sslaccept=strict` |
 
-SQLite 只需要 `provider: sqlite`，数据库文件固定为 `data/data.db`，没有可配置的路径键。切换 provider 相当于换一套数据，建议先备份 `data/`。
+SQLite 仅需 `provider: sqlite`，数据库文件固定为 `data/data.db`，无可配置的路径键。切换 provider 即更换一套数据，建议先备份 `data/`。
 
 ### security
 
 | 键 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
-| `security.jwtSecret` | string | `""` | 访问令牌签名密钥，必须是 64 位十六进制（32 字节） |
-| `security.jwtRefreshSecret` | string | `""` | 刷新令牌签名密钥，同样是 64 位十六进制 |
+| `security.jwtSecret` | string | `""` | 访问令牌签名密钥，须为 64 位十六进制（32 字节） |
+| `security.jwtRefreshSecret` | string | `""` | 刷新令牌签名密钥，同样为 64 位十六进制 |
 | `security.jwtUnsubscribeSecret` | string | `""` | 邮件退订 JWT 的独立密钥；为空时自动生成并回写 |
 | `security.legacyJwtCutoff` | number | `0` | 旧 JWT 格式兼容截止的 Unix 秒时间戳；新安装固定为 `0`（不启用兼容） |
 | `security.externalEncryptionKey` | string | `""` | 加密外部登录 Provider 密钥的主密钥；为空时自动生成并回写 |
 
-- 所有密钥字段格式为 64 位 hex，写错会在启动时报错；
-- `jwtUnsubscribeSecret`、`externalEncryptionKey` 缺失会被自动生成并写回文件；
-- 更换 `jwtSecret` / `jwtRefreshSecret` 会让所有已登录会话失效（相当于强制全员重新登录）。
+- 所有密钥字段格式为 64 位十六进制，格式错误将在启动时产生错误；
+- `jwtUnsubscribeSecret`、`externalEncryptionKey` 缺失时将被自动生成并写回文件；
+- 更换 `jwtSecret` / `jwtRefreshSecret` 将使所有已登录会话失效，即强制全体用户重新登录。
 
-## 文件本身的性质
+## 文件权限与读取
 
-- `config.yml` 权限为 `0600`，只有运行后端的用户可读；
-- 后端启动时读取一次并缓存，任何改动都需要重启进程；
-- 任何 API 都不会返回它，包括备份与导出接口；
-- setup 阶段的中间文件是 `config.yml.setup`，同样是 `0600`，成功后重命名为 `config.yml`。
+- `config.yml` 权限为 `0600`，仅运行后端的用户可读；
+- 后端在启动时读取一次并缓存，任何改动均须重启进程；
+- 任何 API 均不返回该文件，包括备份与导出接口；
+- setup 阶段的中间文件为 `config.yml.setup`，权限同样为 `0600`，setup 成功后重命名为 `config.yml`。
 
 ::: warning
-不要把 `config.yml` 提交进版本库，也不要在支持工单、截图或日志里粘贴它的内容。示例中一律使用 `<password>`、`<apiKey>` 之类的占位。
+不得将 `config.yml` 提交进版本库，也不得在支持工单、截图或日志中粘贴其内容。示例中一律使用 `<password>`、`<apiKey>` 等占位。
 :::
 
 ## 环境变量
@@ -122,16 +122,16 @@ SQLite 只需要 `provider: sqlite`，数据库文件固定为 `data/data.db`，
 | `LT_WEB_HOST` | `0.0.0.0` | 前端监听地址 |
 | `LT_WEB_PORT` | `23310` | 前端监听端口 |
 | `LT_WEB_API_URL` | `/api` | 前端构建期 API 前缀 |
-| `LT_SERVER_URL` | `http://127.0.0.1:23320` | 前端运行期代理目标，必须是纯 origin |
+| `LT_SERVER_URL` | `http://127.0.0.1:23320` | 前端运行期代理目标，须为纯 origin |
 | `LT_GIT_COMMIT` | 无 | 构建期写入版本号 |
 
-## 只能在后台改的配置
+## 管理后台配置项
 
-限流、SMTP、存储、外部登录 Provider、Turnstile、注册策略、站点设置、附件配额都保存在数据库里，通过管理后台修改，立即生效（部分需要重新加载页面）。原因：
+限流、SMTP、存储、外部登录 Provider、Turnstile、注册策略、站点设置、附件配额均保存于数据库，通过管理后台修改后立即生效，部分项需重新加载页面。原因如下：
 
-- 限流默认值在 `backend/src/constants/rate-limit.ts` 中单处定义，前端读取同一份配置渲染表单，避免"文档一套、代码一套"；
-- 这些配置与站点数据强关联（例如外部登录 Provider 的密钥需要用 `security.externalEncryptionKey` 加密存库），写在 `config.yml` 里会绕过 setup 的加密与校验流程；
-- 它们需要随数据库备份一起迁移，放进 `config.yml` 反而容易漏备份。
+- 限流默认值在 `backend/src/constants/rate-limit.ts` 中单处定义，前端读取同一份配置渲染表单，以避免文档与代码中的默认值不一致；
+- 这些配置与站点数据强关联，例如外部登录 Provider 的密钥需用 `security.externalEncryptionKey` 加密存库；写入 `config.yml` 将绕过 setup 的加密与校验流程；
+- 建议将这些配置随数据库备份一并迁移；写入 `config.yml` 后将不随数据库备份迁移。
 
 限流默认值：
 
@@ -140,13 +140,13 @@ SQLite 只需要 `provider: sqlite`，数据库文件固定为 `data/data.db`，
 | 全局 | 60 秒内 100 次 |
 | 认证类接口 | 60 秒内 10 次 |
 | 邮件发送 | 冷却 60 秒 |
-| Minecraft 链接 | 最多 5 次，失败后锁定 15 分钟 |
+| Minecraft 链接 | 至多 5 次，失败后锁定 15 分钟 |
 
 存储配置默认 `{ driver: 'local', uploadDir: 'data/uploads' }`；S3 默认 `region: us-east-1`、`forcePathStyle: true`、`presignExpiry: 300`。
 
-## 不可配置的硬编码值
+## 硬编码值
 
-以下值写死在代码里，`config.yml` 与后台都无法修改：
+以下值硬编码于代码，`config.yml` 与管理后台均无法修改：
 
 | 项 | 值 |
 | --- | --- |
@@ -163,4 +163,4 @@ SQLite 只需要 `provider: sqlite`，数据库文件固定为 `data/data.db`，
 | `pendingExpirationEnabled` | `true` | 布尔 |
 | `pendingTtlDays` | `7` | 上限 `365` 天 |
 
-"pending" 指已上传但尚未挂到议题上的附件；开启过期后超期未使用的附件会被清理。相关排障与存储迁移见 [运维与升级](./operations.md)。
+「pending」指已上传但尚未挂到议题上的附件；开启过期后，超期未使用的附件将被清理。相关排障与存储迁移见 [运维与升级](./operations.md)。

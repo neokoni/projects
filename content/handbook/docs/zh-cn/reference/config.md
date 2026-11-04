@@ -6,7 +6,7 @@ order: 1
 
 ## projects.json
 
-唯一的项目数据源。主页卡片、导航数据全部来自它，组件里不写死任何项目。
+`projects.json` 为唯一的项目数据源。主页卡片与导航数据均取自该文件，组件中不硬编码项目列表。
 
 ```json
 {
@@ -14,50 +14,60 @@ order: 1
   "description": "一句话说明",
   "group": "services | projects | other",
   "links": [
-    { "text": "官网", "href": "https://example.com/" },
-    { "text": "文档", "slug": "handbook" }
+    {
+      "text": "官网",
+      "href": "https://example.com/"
+    },
+    {
+      "text": "文档",
+      "slug": "handbook"
+    }
   ],
   "tags": ["可选"]
 }
 ```
 
-每条 `links` 只能在 `slug` 与 `href` 里选一个：写 `slug` 表示站内文档区（必须与 `content/<slug>/` 一致），写 `href` 表示完整 `http(s)` 地址。
+每条 `links` 仅接受 `slug` 与 `href` 之一：`slug` 指向站内文档区，取值须与 `content/<slug>/` 一致；`href` 为完整 `http(s)` 地址。
 
-卡片怎么渲染由条数决定：
+卡片渲染方式由 `links` 的条数决定。
 
-| `links` 条数 | 行为 |
+| `links` 条数 | 渲染结果 |
 | --- | --- |
-| 1 条 | 整张卡片就是链接，点击任意位置进入；外链自动 `target="_blank"` |
-| 多条 | 卡片本身不可点，卡内渲染按钮，每个入口一个 |
+| 1 条 | 整张卡片为链接，点击任意位置即可进入；外部链接自动设置 `target="_blank"` |
+| 多条 | 卡片本身不可点，卡内按入口数量渲染按钮，每个入口对应一个按钮 |
 
-校验在配置加载时执行，`dev` 和 `build` 都会跑，出错直接中断并列出所有问题（而不是只报第一条）。
+校验在配置加载时执行，`dev` 与 `build` 均会触发，出错时将中断并列出全部问题，而非仅报告第一条。
 
-## 关键开关
+## 关键配置项
 
-| 配置 | 值 | 为什么 |
+| 配置项 | 取值 | 作用 |
 | --- | --- | --- |
-| `srcDir` | `content` | 让 URL 与目录一一对应，同时把 `README.md` 等排除在站点外 |
-| `cleanUrls` | `true` | 线上地址没有 `.html` 后缀 |
-| `outDir` | `dist` | 部署脚本只需上传一个目录 |
-| `sidebar` | 由目录扫描生成 | 加项目不用改配置 |
-| `search` | `local` | 全站搜索，跨项目也能搜到 |
-| `titleTemplate` | `false` | 主页不想要「标题 - 站点名」的重复 |
+| `srcDir` | `content` | URL 与目录一一对应，`README.md` 等文件不进入站点 |
+| `cleanUrls` | `true` | 线上地址不带 `.html` 后缀 |
+| `outDir` | `dist` | 部署脚本仅需上传一个目录 |
+| `sidebar` | 由目录扫描生成 | 新增项目时不需要修改配置 |
+| `search` | `local` | 全站搜索，可跨项目搜索 |
+| `titleTemplate` | `false` | 页面标题不拼接站点名 |
 
 ## 样式
 
-组件的样式就是模板里的 Tailwind 工具类，没有单独的组件样式表。尺寸直接写在类名上：
+组件样式由模板中的 Tailwind 工具类承担，不存在独立的组件样式表。尺寸写在类名中。
 
 | 位置 | 类名 | 作用 |
 | --- | --- | --- |
-| 卡片宽度 | `sm:max-w-[380px]` | 单卡上限，避免大屏被拉成通栏 |
-| 项目网格 | `sm:grid-cols-[repeat(auto-fill,minmax(272px,1fr))]` | 最小列宽决定几列 |
-| 文档网格 | `sm:grid-cols-[repeat(auto-fill,minmax(240px,1fr))]` | 文档卡片比项目卡片窄一档 |
+| 卡片宽度 | `sm:max-w-[380px]` | 单卡宽度上限，大屏下不拉伸为通栏 |
+| 项目网格 | `sm:grid-cols-[repeat(auto-fill,minmax(272px,1fr))]` | 最小列宽决定列数 |
+| 文档网格 | `sm:grid-cols-[repeat(auto-fill,minmax(240px,1fr))]` | 文档卡片宽度小于项目卡片 |
 
-颜色一律走 `--vp-c-*` 与 `--vp-button-*` 变量，亮色/暗色自动跟随，不要写死色值。
+建议使用 `--vp-c-*` 与 `--vp-button-*` 变量取值，亮色与暗色将自动跟随；不建议写死色值。
 
-`.vitepress/theme/styles/` 下只有两个文件：
+`.vitepress/theme/styles/` 下仅有两个文件：
 
-- `tailwind.css`：引入 Tailwind。不带 preflight——VitePress 有自己的基础样式，重置会互相打架；utilities 故意不放进 `@layer`，因为 VitePress 的样式是未分层的，分层规则永远输给它，`main { display: block }` 这类普通规则就会盖掉 `.flex`。
-- `overrides.css`：只放覆盖 VitePress 自身的规则。
+- `tailwind.css`：引入 Tailwind，不启用 preflight。VitePress 自带基础样式，preflight 的重置规则将与其冲突。utilities 不放入 `@layer`：VitePress 的样式未分层，分层规则的优先级低于未分层规则，`main { display: block }` 一类普通规则将覆盖 `.flex`。
+- `overrides.css`：仅存放覆盖 VitePress 自身样式的规则。
 
-导航栏在所有页面是同一条通栏。VitePress 默认会在有侧边栏的页面上，用侧边栏的「帘子」盖住导航栏左半边，形成左灰右白的拼接；`overrides.css` 把 `has-sidebar` 的透明背景改回 `--vp-nav-bg-color`，让侧边栏从导航栏下方开始。改导航相关样式时别把那段删掉。
+导航栏在所有页面均为同一条通栏。在含侧边栏的页面上，VitePress 默认以侧边栏覆盖导航栏左半部分，导航栏呈现左灰右白的拼接。
+
+`overrides.css` 将 `has-sidebar` 的透明背景改为 `--vp-nav-bg-color`，使侧边栏自导航栏下方开始。
+
+调整导航相关样式时不得删除上述规则。
